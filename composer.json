@@ -16,6 +16,11 @@
         "illuminate/support": "~5.1",
         "sureyee/rock-fintech": "dev-master"
     },
+    "autoload": {
+        "psr-4": {
+            "Sureyee\\LaravelRockFinTech\\" : "src"
+        }
+    },
     "repositories": [
         {
             "type": "vcs",
