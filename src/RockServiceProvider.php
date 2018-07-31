@@ -10,6 +10,7 @@ namespace Sureyee\LaravelRockFinTech;
 
 
 use Illuminate\Support\ServiceProvider;
+use Sureyee\RockFinTech\Request;
 
 class RockServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,7 @@ class RockServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('rock', function () {
-           return new Rock();
+           return new Rock(new Request());
         });
     }
 
