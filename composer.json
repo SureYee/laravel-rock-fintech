@@ -1,0 +1,25 @@
+{
+    "name": "sureyee/laravel-rock-fintech",
+    "description": "laravel rock fin tech api",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "yixu",
+            "email": "yixu@sureyee.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "illuminate/console": "~5.1",
+        "illuminate/contracts": "~5.1",
+        "illuminate/support": "~5.1",
+        "sureyee/rock-fintech": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@gitee.com:sureyee/rock-fintech.git"
+        }
+    ]
+}
