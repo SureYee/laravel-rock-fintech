@@ -36,11 +36,12 @@ class Rock
     {
         $this->request->setService(snake_case(__FUNCTION__));
         $params = [
-            'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
             'mobile' => $mobile,
             'account_type' => $account_type,
             'role_type' => $role_type,
             'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
+            'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
+            'callback_url' => route('rft-callback'),
             'out_serial_no' => is_null($out_serial_no) ? $this->uniqueId() : $out_serial_no,
         ];
 

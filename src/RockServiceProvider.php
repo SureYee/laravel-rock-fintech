@@ -32,7 +32,9 @@ class RockServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/rock_fin_tech.php'
+            __DIR__.'/config/rock_fin_tech.php' => config_path('rock_fin_tech.php')
         ]);
+
+        $this->loadRoutesFrom(__DIR__ . '/routes.php');
     }
 }

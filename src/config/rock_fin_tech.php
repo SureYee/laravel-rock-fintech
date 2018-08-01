@@ -8,8 +8,8 @@ return [
 
     'rft_org' => env('RFT_ORG'),
 
-    'pub_key' => env('RFT_PUB_KEY'),
-    'pri_key' => env('RFT_PRI_KEY'),
+    'pub_key' => storage_path(env('RFT_PUB_KEY')),
+    'pri_key' => storage_path(env('RFT_PRI_KEY')),
 
 
     // 异步采用统一的回调地址，通过触发不同的事件来做出相应。
@@ -18,9 +18,13 @@ return [
     ],
 
     'success_url' => [
-        'create_account_p' => '',
+        'create_account_p' => 'http://example.com',
+    ],
 
+    'fail_url' => [
+        'create_account_p' => 'http://example.com',
     ]
+
 
 
 ];

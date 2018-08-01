@@ -11,9 +11,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "illuminate/console": "~5.1",
-        "illuminate/contracts": "~5.1",
-        "illuminate/support": "~5.1",
+        "laravel/framework": "5.5.*",
         "sureyee/rock-fintech": "dev-master"
     },
     "autoload": {
