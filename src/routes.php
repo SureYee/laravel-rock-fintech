@@ -9,5 +9,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'rock' ],function () {
-    Route::get('callback')->name('rft-callback');
+    Route::post('callback')->name('rft-callback');
 });
