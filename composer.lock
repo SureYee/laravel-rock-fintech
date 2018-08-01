@@ -614,7 +614,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitee.com:sureyee/rock-fintech.git",
-                "reference": "74ebd88146e5ea22f4d40fed249d3ac001ebca1c"
+                "reference": "8433bfb7a51d3ce1f6e00f03f8d2ce0f7e1cec6d"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -642,7 +642,7 @@
                 }
             ],
             "description": "rock fintch api",
-            "time": "2018-07-30 08:07:26"
+            "time": "2018-07-31 09:02:18"
         },
         {
             "name": "symfony/console",
