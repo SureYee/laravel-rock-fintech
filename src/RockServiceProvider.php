@@ -9,7 +9,9 @@
 namespace Sureyee\LaravelRockFinTech;
 
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Request;
 
 class RockServiceProvider extends ServiceProvider
@@ -18,7 +20,12 @@ class RockServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('rock', function () {
-           return new Rock(new Request());
+            $rft_key = Config::get('rock_fin_tech.rft_key');
+            $rft_secret = Config::get('rock_fin_tech.rft_secret');
+            $rft_org = Config::get('rock_fin_tech.rft_org');
+            $pub_key = Config::get('rock_fin_tech.pub_key');
+            $pri_key = Config::get('rock_fin_tech.pri_key');
+            return new Rock(new Client($rft_key, $rft_secret, $rft_org, $pub_key, $pri_key), new Request());
         });
     }
 

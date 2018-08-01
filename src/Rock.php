@@ -22,8 +22,6 @@ use Sureyee\RockFinTech\Request;
 class Rock
 {
 
-    const ACCOUNT_TYPE_BORROWER = 2;
-
     protected $client;
 
     protected $request;
@@ -34,7 +32,7 @@ class Rock
         $this->client = $client;
     }
 
-    public function createAccountP($mobile, $account_type, $role_type, $out_serial_no = null)
+    public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
         $this->request->setService(snake_case(__FUNCTION__));
         $params = [
