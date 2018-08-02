@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Request;
+use Sureyee\RockFinTech\RockConfig;
 
 /**
  * Class Rock
@@ -32,6 +33,14 @@ class Rock
         $this->client = $client;
     }
 
+    /**
+     * 个人|企业开户接口(页面)
+     * @param $mobile
+     * @param int $role_type
+     * @param int $account_type
+     * @param null $out_serial_no
+     * @return false|\Sureyee\RockFinTech\Response
+     */
     public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
         $this->request->setService(snake_case(__FUNCTION__));
@@ -49,6 +58,30 @@ class Rock
 
         return $this->send();
 
+    }
+
+    /**
+     * 批次还款
+     * @param array $items
+     * @param string $batch_type
+     * @param null $batch_no
+     * @param null $batch_date
+     * @return false|\Sureyee\RockFinTech\Response
+     */
+    public function batchRepaymentB(array $items, $batch_type = RockConfig::BATCH_TYPE_REPAY, $batch_no = null,  $batch_date = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__));
+
+        $params = [
+            'batch_no' => $batch_no ?? uniqid(),
+            'batch_type' => $batch_type,
+            'batch_date' => $batch_date ?? date('Y-m-d'),
+            'items' => $items
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
     }
 
     /**
