@@ -8,6 +8,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'rock' ],function () {
-    Route::post('callback')->name('rft-callback');
+Route::group(['prefix' => 'rock', 'namespace' => 'Sureyee\LaravelRockFinTech\Controllers' ],function () {
+    Route::post('callback', 'CallbackController@callback')->name('rft-callback');
 });

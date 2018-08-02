@@ -9,14 +9,21 @@
 namespace Sureyee\LaravelRockFinTech\Traits;
 
 
+use Sureyee\LaravelRockFinTech\Facades\Rock;
+use Sureyee\RockFinTech\Contracts\ResponseInterface;
+
 class AccountTrait
 {
-    public function __construct()
-    {
-    }
-
+    /**
+     * @return ResponseInterface|bool
+     */
     public function createAccount()
     {
+        return Rock::createAccountP($this->rtfMobile);
+    }
 
+    public function getRtfMobileAttribute()
+    {
+        return $this->mobile;
     }
 }
