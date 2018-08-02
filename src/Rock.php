@@ -75,7 +75,8 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_date' => $batch_date ?? date('Y-m-d'),
+            'batch_count' => count($items),
+            'batch_date' => $batch_date ?? date('Ymd'),
             'items' => $items
         ];
 
