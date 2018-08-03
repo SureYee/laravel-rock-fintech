@@ -14,6 +14,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
+use Sureyee\LaravelRockFinTech\Facades\Rock;
+use Sureyee\RockFinTech\Response;
 
 
 class CallbackController extends Controller
@@ -22,12 +24,30 @@ class CallbackController extends Controller
 
     public function callback(Request $request)
     {
-        Log::info('request data:', $request->all());
-//        $this->getEventInstance();
+        $this->validSign($request->all());
+
+        $event = $this->getEventInstance($request->get('service'), $request);
+
+        dd($event);
     }
 
-    protected function getEventInstance()
+    /**
+     * @param $service
+     * @param Request $request
+     * @return mixed
+     */
+    protected function getEventInstance($service, Request $request)
     {
-        $event = config('rock_fin_tech.callback.');
+        $event = config('rock_fin_tech.callback.' . $service);
+
+        return new $event(new Response($request->all()));
+    }
+
+    protected function validSign(array $params)
+    {
+        if (!Rock::validSign($params)) {
+            Log::warning('数据验签失败!', $params);
+            abort(403);
+        }
     }
 }
