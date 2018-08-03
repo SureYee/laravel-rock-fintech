@@ -12,6 +12,7 @@ namespace Sureyee\LaravelRockFinTech;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Sureyee\RockFinTech\Client;
+use Sureyee\RockFinTech\Exceptions\ResponseException;
 use Sureyee\RockFinTech\Request;
 use Sureyee\RockFinTech\RockConfig;
 
@@ -27,10 +28,17 @@ class Rock
 
     protected $request;
 
+    /**
+     * 回调地址
+     * @var string
+     */
+    protected $callback;
+
     public function __construct(Client $client, Request $request)
     {
         $this->request = $request;
         $this->client = $client;
+        $this->callback = route('rft-callback');
     }
 
     /**
@@ -40,6 +48,7 @@ class Rock
      * @param int $account_type
      * @param null $out_serial_no
      * @return false|\Sureyee\RockFinTech\Response
+     * @throws
      */
     public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
@@ -50,7 +59,7 @@ class Rock
             'role_type' => $role_type,
             'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
             'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
-            'callback_url' => route('rft-callback'),
+            'callback_url' => $this->callback,
             'out_serial_no' => is_null($out_serial_no) ? $this->uniqueId() : $out_serial_no,
         ];
 
@@ -67,6 +76,7 @@ class Rock
      * @param null $batch_no
      * @param null $batch_date
      * @return false|\Sureyee\RockFinTech\Response
+     * @throws
      */
     public function batchRepaymentB(array $items, $batch_type = RockConfig::BATCH_TYPE_REPAY, $batch_no = null,  $batch_date = null)
     {
@@ -77,6 +87,7 @@ class Rock
             'batch_type' => $batch_type,
             'batch_count' => count($items),
             'batch_date' => $batch_date ?? date('Ymd'),
+            'notify_url' => $this->callback,
             'items' => $items
         ];
 
@@ -87,13 +98,15 @@ class Rock
 
     /**
      * 发送请求
-     * @return \Sureyee\RockFinTech\Response|false
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
     protected function send()
     {
         try {
             return $this->client->request($this->request);
-        } catch (\Exception $exception) {
+        } catch (ResponseException $exception) {
             Log::error($exception->getMessage(), $this->request->getParams());
         }
         return false;
