@@ -47,6 +47,8 @@ class Rock
         $this->callback = route('rft-callback');
     }
 
+    //==================================  账户类接口 ==============================//
+
     /**
      * 个人|企业开户接口(页面)
      * @param $mobile
@@ -72,8 +74,72 @@ class Rock
         $this->request->setParams($params);
 
         return $this->send();
-
     }
+
+    /**
+     * 重置密码（页面）
+     * @param $customer_no
+     * @param $card_no
+     * @param null $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function setPasswordP($customer_no, $card_no, $out_serial_no = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__));
+
+        $params = [
+            'customer_no' => $customer_no,
+            'card_no' => $card_no,
+            'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
+            'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
+            'callback_url' => $this->callback,
+            'out_serial_no' => is_null($out_serial_no) ? $this->uniqueId() : $out_serial_no,
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
+    }
+
+    /**
+     * 解绑银行卡
+     * @param $card_no
+     * @param $bank_card_no
+     * @param $customer_no
+     * @param $serial_no
+     * @param $bank_mobile
+     * @param $card_type
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function unbindBankCard(
+        $card_no,
+        $bank_card_no,
+        $customer_no,
+        $serial_no,
+        $bank_mobile,
+        $card_type= RockConfig::CARD_TYPE_MAIN
+    )
+    {
+        $this->request->setService(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' =>$card_no,
+            'bank_card_no' => $bank_card_no,
+            'customer_no' => $customer_no,
+            'serial_no' => $serial_no,
+            'bank_mobile' => $bank_mobile,
+            'card_type' => $card_type,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    // =============================  批量处理接口 =================================//
 
     /**
      * 批次还款

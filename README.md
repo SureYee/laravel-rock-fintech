@@ -3,35 +3,95 @@
 #### 项目介绍
 rock-fintech的laravel封装
 
-#### 软件架构
-软件架构说明
 
+#### 安装说明
 
-#### 安装教程
+1. 在`config/app.php`中添加服务
 
-1. xxxx
-2. xxxx
-3. xxxx
+    ```php
+   'providers' => [
+       ...
+       \Sureyee\LaravelRockFinTech\RockServiceProvider::class,
+   ]
+    ```
+
+    ```php
+    'aliases' => [
+       ...
+       'Rock' => Sureyee\LaravelRockFinTech\Facades\Rock::class,
+    ]
+    ```
+    
+2. 运行 `php artisan vendor:publish` 发布配置项文件
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+所有的接口均使用API接口中的`service`名称的小驼峰形式命名，可以通过`Facade`门面直接调用。
 
-#### 参与贡献
+1. 调用接口：
 
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+    ```php
+       // 注册账户
+       $mobile = '18666666666';
+       $response = Rock::createAccountP($mobile);
+       // 同步回调
+       if ($response->isSuccess()) {
+           // do...sth...
+       }  else {
+           // notify wrong things
+       }
+    ```
+    
+2. 处理异步回调
 
+    异步回调均通过事件解耦，可以在config文件中自定义回调触发事件，然后通过事件订阅者进行执行。
 
-#### 码云特技
+    ```php
+   // config
+   'callback' => [
+       'create_account_p' =>  \Sureyee\LaravelRockFinTech\Events\CreateAccountCallback::class,
+   ],
+    // EventServiceProvider.php
+   protected $listen = [
+       BatchRepaymentCallback::class => [
+           TestListener::class
+       ]
+   ];
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [http://git.mydoc.io/](http://git.mydoc.io/)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+    // listener
+   namespace App\Listeners;
+   
+   use Illuminate\Queue\InteractsWithQueue;
+   use Illuminate\Contracts\Queue\ShouldQueue;
+   use Sureyee\LaravelRockFinTech\Controllers\EventFailedException;
+   
+   class TestListener
+   {
+       /**
+        * Create the event listener.
+        *
+        * @return void
+        */
+       public function __construct()
+       {
+           //
+       }
+   
+       /**
+        * Handle the event.
+        *
+        * @param  object  $event
+        * @return void
+        */
+       public function handle($event)
+       {
+           // 执行业务逻辑
+        
+           // 失败抛出 EventFailed 错误即可
+           throw new EventFailedException('failed');
+       }
+   }
+    ```
+    如果是推送到队列进行处理，抛出错误是没有办法被捕捉的。
+    并且会直接输出`success`
+    
