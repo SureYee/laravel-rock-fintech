@@ -139,6 +139,94 @@ class Rock
         return $this->send();
     }
 
+    /**
+     * 电子账户查询
+     * @param string $card_no 电子账号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function accountMobile($card_no)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(['card_no' => $card_no]);
+
+        return $this->send();
+    }
+
+    /**
+     * 电子账户余额查询
+     * @param string $card_no 电子账号
+     * @param string $customer_no 客户号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function accountBalance($card_no, $customer_no)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'customer_no' => $customer_no
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * @param string $card_no 电子账号
+     * @param int $type 营销户类型
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function marketingQuery($card_no, $type = RockConfig::MARKETING_SERVICE_TYPE)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'type' => $type
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * 个人户按证件号查询电子账号
+     * @param string $cert_no 证件号
+     * @param int $cert_type 证件类型
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function findAccountById($cert_no, $cert_type = RockConfig::CERT_TYPE_ID_CARD)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'cert_no' => $cert_no,
+                'cert_type' => $cert_type
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * 按手机号查询电子账号信息
+     * @param string $mobile 手机号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function findAccountByMobile($mobile)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'mobile' => $mobile,
+            ]);
+
+        return $this->send();
+    }
+
     // =============================  批量处理接口 =================================//
 
     /**
