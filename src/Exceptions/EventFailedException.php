@@ -6,7 +6,7 @@
  * Time: 11:37
  */
 
-namespace Sureyee\LaravelRockFinTech\Controllers;
+namespace Sureyee\LaravelRockFinTech\Exceptions;
 
 
 class EventFailedException extends \Exception
