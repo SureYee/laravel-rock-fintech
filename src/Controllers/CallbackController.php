@@ -14,6 +14,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
+use Sureyee\LaravelRockFinTech\Exceptions\ConfigSettingErrorException;
 use Sureyee\LaravelRockFinTech\Facades\Rock;
 use Sureyee\RockFinTech\Response;
 
@@ -35,12 +36,16 @@ class CallbackController extends Controller
      * @param $service
      * @param Request $request
      * @return mixed
+     * @throws
      */
     protected function getEventInstance($service, Request $request)
     {
         $event = config('rock_fin_tech.callback.' . $service);
 
-        return new $event(new Response($request->all()));
+        if (class_exists($event)) {
+            return new $event(new Response($request->all()));
+        }
+        throw new ConfigSettingErrorException('rock_fin_tech.callback.' . $service . '配置错误！');
     }
 
     protected function validSign(array $params)
