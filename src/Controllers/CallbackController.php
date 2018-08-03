@@ -23,13 +23,27 @@ class CallbackController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function callback(Request $request)
     {
         $this->validSign($request->all());
 
-        $event = $this->getEventInstance($request->get('service'), $request);
+        try {
+            $event = $this->getEventInstance($request->get('service'), $request);
 
-        dd($event);
+            event($event);
+
+        } catch (ConfigSettingErrorException $exception) {
+            Log::critical($exception->getMessage());
+            return 'failed';
+        } catch (EventFailedException $exception) {
+            Log::error($exception->getMessage());
+            return 'failed';
+        }
+        return 'success';
     }
 
     /**
