@@ -1135,7 +1135,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitee.com:sureyee/rock-fintech.git",
-                "reference": "57148197d38620aa5009b9d5a65b4052d4d29498"
+                "reference": "36d578c667647cdf9b5309751bd0cda869b274ed"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3",
@@ -1163,7 +1163,7 @@
                 }
             ],
             "description": "rock fintch api",
-            "time": "2018-08-02 07:41:47"
+            "time": "2018-08-03 02:24:46"
         },
         {
             "name": "swiftmailer/swiftmailer",

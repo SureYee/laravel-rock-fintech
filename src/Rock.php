@@ -24,8 +24,14 @@ use Sureyee\RockFinTech\RockConfig;
 class Rock
 {
 
+    /**
+     * @var Client
+     */
     protected $client;
 
+    /**
+     * @var Request
+     */
     protected $request;
 
     /**
@@ -110,6 +116,16 @@ class Rock
             Log::error($exception->getMessage(), $this->request->getParams());
         }
         return false;
+    }
+
+    /**
+     * 验签
+     * @param array $params
+     * @return bool
+     */
+    public function validSign(array $params):bool
+    {
+        return $this->client->validSign($params);
     }
 
     /**
