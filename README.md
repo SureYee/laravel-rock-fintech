@@ -63,7 +63,7 @@ rock-fintech的laravel封装
    
    use Illuminate\Queue\InteractsWithQueue;
    use Illuminate\Contracts\Queue\ShouldQueue;
-   use Sureyee\LaravelRockFinTech\Controllers\EventFailedException;
+   use Sureyee\LaravelRockFinTech\Exceptions\EventFailedException;
    
    class TestListener
    {
