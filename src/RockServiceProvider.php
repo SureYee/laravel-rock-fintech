@@ -36,5 +36,7 @@ class RockServiceProvider extends ServiceProvider
         ]);
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
+        Request::setEnv(Config::get('app.env'));
     }
 }
