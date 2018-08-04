@@ -20,10 +20,16 @@ return [
 
     'success_url' => [
         'create_account_p' => 'http://example.com',
+        'bind_bank_card_p' => 'http://example.com',
     ],
 
     'fail_url' => [
         'create_account_p' => 'http://example.com',
+        'bind_bank_card_p' => 'http://example.com',
+    ],
+
+    'forget_pwd_url' => [
+        'bind_bank_card_p' => 'http://example.com',
     ]
 
 

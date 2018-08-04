@@ -227,6 +227,235 @@ class Rock
         return $this->send();
     }
 
+    /**
+     * 投资人投资明细查询
+     * @param string $card_no 	电子账号，必填，19（位数）
+     * @param string|null $asset_no 标的编号，有条件必填，为空时查询所有的产品；不为空时按输入的产品发行方查询，40（位数）
+     * @param int $state 查询的记录状态, 有条件必填，0：查询所有状态；1：投标中 2：放款中 3：计息中 4：本息已返回还，1（位数）
+     * @param int|null $page_flag 翻页标志，有条件必填，首次查询上送空 ；翻页查询上送1，1（位数）
+     * @param string|null $buy_date 投标日期，有条件必填，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的投标日期，8（位数）
+     * @param string|null $out_serial_no 交易流水号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的申请流水号，32（位数）
+     * @param string|null $asset_page 标的编号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的标的编号，6（位数）
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function accountCredits(
+        $card_no,
+        $asset_no = null,
+        $state = RockConfig::SEARCH_STATE_ALL,
+        $page_flag = RockConfig::PAGE_FLAG_TRUE,
+        $buy_date = null,
+        $out_serial_no = null,
+        $asset_page = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'asset_no' => $asset_no,
+                'state' => $state,
+                'page_flag' => $page_flag,
+                'buy_date' => $buy_date,
+                'out_serial_no' => $out_serial_no,
+                'asset_page' => $asset_page,
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * 账户业务流程查询
+     * @param string $card_no 卡号，必填，电子账户，19（位数）
+     * @param string $begin_date 起始记账日期，必填，格式：Ymd
+     * @param string $end_date 	结束记账日期，必填，格式：Ymd
+     * @param int $current_result 起始记录数，必填，大于等于1
+     * @param int $total_result 查询记录条数，必填，不得超过99
+     * @param null|int $type 流水类型，条件选填，默认所有交易，0：所有交易；1：转入；2：转出
+     * @param null|int $order_by 排序，条件选填，默认正序 1：正序 2：倒序
+     * @param null|int $record_flag 冲正标志位，条件选填，默认所有，Y是 N否
+     * @param null|string $transact_type 交易类型，条件选填，默认所有流水，B：金融流水，N：非金融流水
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function accountTransactionQuery(
+        $card_no,
+        $begin_date,
+        $end_date,
+        $current_result = 1,
+        $total_result = 20,
+        $type = null,
+        $order_by = null,
+        $record_flag = null,
+        $transact_type = null
+        )
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(compact(
+                'card_no', 'begin_date', 'end_date', 'current_result', 'total_result',
+                'type', 'order_by', 'record_flag', 'transact_type'
+            ));
+
+        return $this->send();
+    }
+
+
+    /**
+     * 开户结果查询接口
+     * @param string $order_id 	订单号，32（位数）
+     * @param int $account_type 账户类型(普通户200201,企业户200204), 选填, 不填默认200201
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function createAccountSrQuery($order_id, $account_type = RockConfig::ACCOUNT_TYPE_COMMON)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(compact(
+                'order_id', 'account_type'
+            ));
+
+        return $this->send();
+    }
+
+    /**
+     * 网关自定义下单查询
+     * @param string $order_id 订单号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function gatewayQuery($order_id)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(compact('order_id'));
+
+        return $this->send();
+    }
+
+    /**
+     * 网关重置密码查询接口
+     * @param string $order_id 订单号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function setPasswordQuery($order_id)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(compact('order_id'));
+
+        return $this->send();
+    }
+
+    /**
+     * 绑卡网关接口（页面）
+     * @param string $card_no 电子账户
+     * @param int $card_type 绑定卡类型
+     * @param null|string $out_serial_no 流水号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function bindBankCardP($card_no,$card_type = RockConfig::CARD_TYPE_MAIN, $out_serial_no = null )
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'card_type' => $card_type,
+                'out_serial_no' => $out_serial_no ?? uniqueId32(),
+                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+                'callback_url' => $this->callback,
+            ]);
+
+        return $this->send();
+    }
+
+    // ==============================  资金类接口 ==================================//
+
+    /**
+     * 资金冻结
+     * @param string $card_no 电子账号
+     * @param float $amount 冻结金额
+     * @param null|string $out_serial_no 申请流水号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function frozen($card_no, $amount, $out_serial_no = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'amount' =>$amount,
+                'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * @param string $card_no 电子账号
+     * @param float $amount 原冻结金额
+     * @param string $origin_serial_no 原交易流水号
+     * @param null|string $out_serial_no 交易流水号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function unfrozen($card_no, $amount, $origin_serial_no, $out_serial_no = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'amount' => $amount,
+                'out_serial_no' => $out_serial_no ?? uniqueId32(),
+                'origin_serial_no' => $origin_serial_no,
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * 资金冻结查询
+     * @param string $card_no 交易代码
+     * @param string $origin_serial_no 原资金冻结交易流水号
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function frozenQuery($card_no, $origin_serial_no)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams(compact('card_no', 'origin_serial_no'));
+
+        return $this->send();
+    }
+
+    /**
+     * 营销账户充值
+     * @param float $amount 金额
+     * @param null|string $serial_no 交易流水号
+     * @param int $currency 币种
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function couponRecharge($amount, $serial_no = null, $currency = RockConfig::CNY)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'amount' => $amount,
+                'serial_no' => $serial_no ?? uniqueId32(),
+                'currency' => $currency
+            ]);
+
+        return $this->send();
+    }
+    
+    
     // =============================  批量处理接口 =================================//
 
     /**
