@@ -14,6 +14,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
+use Sureyee\LaravelRockFinTech\Events\RockCallback;
 use Sureyee\LaravelRockFinTech\Exceptions\ConfigSettingErrorException;
 use Sureyee\LaravelRockFinTech\Facades\Rock;
 use Sureyee\RockFinTech\Response;
@@ -55,6 +56,10 @@ class CallbackController extends Controller
     protected function getEventInstance($service, Request $request)
     {
         $event = config('rock_fin_tech.callback.' . $service);
+
+        if (is_null($event)) {
+            return new RockCallback(new Response($request->all()));
+        }
 
         if (class_exists($event)) {
             return new $event(new Response($request->all()));

@@ -2,11 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: sure
- * Date: 2018-08-03
- * Time: 11:11
+ * Date: 2018-08-01
+ * Time: 18:07
  */
 
 namespace Sureyee\LaravelRockFinTech\Events;
+
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Sureyee\RockFinTech\Contracts\ResponseInterface;
 
-class BatchRepaymentCallback
+class RockCallback
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,6 +28,6 @@ class BatchRepaymentCallback
 
     public function broadcastOn()
     {
-        return new PrivateChannel('');
+        return new PrivateChannel('rtf-create-account');
     }
 }
