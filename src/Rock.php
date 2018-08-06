@@ -631,7 +631,7 @@ class Rock
     protected function send()
     {
         // 系统状态验证
-        if (Cache::has('rock_system_down')) {
+        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()) {
             throw new SystemDownException('系统维护中!');
         }
 
@@ -660,5 +660,18 @@ class Rock
     protected function uniqueId()
     {
         return md5(uniqid(md5(microtime(true)),true));
+    }
+
+    /**
+     * 获取系统维护时间
+     * @return null|array
+     */
+    public function getSystemMaintenanceTime()
+    {
+        if (Cache::has('rock_system_down')) {
+            return Cache::get('rock_system_down');
+        } else {
+            return null;
+        }
     }
 }
