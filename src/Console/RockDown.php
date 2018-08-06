@@ -21,7 +21,7 @@ class RockDown extends Command
     public function handle()
     {
         $start = $this->option('start');
-        $hours = $this->option('hours');
+        $hours = $this->option('h');
 
         $start = strtotime($start);
 
