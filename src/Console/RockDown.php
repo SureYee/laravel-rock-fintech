@@ -38,7 +38,7 @@ class RockDown extends Command
 
         $this->systemDown($start, $end);
 
-        $this->info('钜石科技接口系统进入维护！维护时间(' . date('Y-m-d H:i:s', $start) . $end ? ' - ' . date('Y-m-d H:i:s', $end) : '' . ')');
+        $this->info('钜石科技接口系统进入维护！维护时间(' . date('Y-m-d H:i:s', $start) .($end ? ' - ' . date('Y-m-d H:i:s', $end) : '') . ')');
     }
 
     protected function systemDown($start = null, $end = null)
