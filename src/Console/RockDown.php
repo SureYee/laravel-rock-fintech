@@ -37,6 +37,8 @@ class RockDown extends Command
         $end = (int) $hours === 0 ? null : $hours * 3600 + $start;
 
         $this->systemDown($start, $end);
+
+        $this->info('钜石科技接口系统进入维护！维护时间(' . date('Y-m-d H:i:s', $start) .' - ' . date('Y-m-d H:i:s', $end) . ')');
     }
 
     protected function systemDown($start = null, $end = null)
