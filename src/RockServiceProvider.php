@@ -11,6 +11,8 @@ namespace Sureyee\LaravelRockFinTech;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Sureyee\LaravelRockFinTech\Console\RockDown;
+use Sureyee\LaravelRockFinTech\Console\RockUp;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Request;
 
@@ -36,6 +38,13 @@ class RockServiceProvider extends ServiceProvider
         ]);
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                RockDown::class,
+                RockUp::class,
+            ]);
+        }
 
         Request::setEnv(Config::get('app.env'));
     }

@@ -20,15 +20,19 @@ return [
     'success_url' => [
         'create_account_p' => 'http://example.com',
         'bind_bank_card_p' => 'http://example.com',
+        'bank_recharge' => null,
+        'recharge_p' => null,
     ],
 
     'fail_url' => [
         'create_account_p' => 'http://example.com',
         'bind_bank_card_p' => 'http://example.com',
+        'recharge_p' => null,
     ],
 
     'forget_pwd_url' => [
         'bind_bank_card_p' => 'http://example.com',
+        'recharge_p' => null,
     ]
 
 

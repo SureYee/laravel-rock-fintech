@@ -9,8 +9,10 @@
 namespace Sureyee\LaravelRockFinTech;
 
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Sureyee\LaravelRockFinTech\Exceptions\SystemDownException;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Exceptions\ResponseException;
 use Sureyee\RockFinTech\Request;
@@ -82,6 +84,7 @@ class Rock
      * @param $card_no
      * @param null $out_serial_no
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -112,6 +115,7 @@ class Rock
      * @param $bank_mobile
      * @param $card_type
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -143,6 +147,7 @@ class Rock
      * 电子账户查询
      * @param string $card_no 电子账号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -159,6 +164,7 @@ class Rock
      * @param string $card_no 电子账号
      * @param string $customer_no 客户号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -177,6 +183,7 @@ class Rock
      * @param string $card_no 电子账号
      * @param int $type 营销户类型
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -196,6 +203,7 @@ class Rock
      * @param string $cert_no 证件号
      * @param int $cert_type 证件类型
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -214,6 +222,7 @@ class Rock
      * 按手机号查询电子账号信息
      * @param string $mobile 手机号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -237,6 +246,7 @@ class Rock
      * @param string|null $out_serial_no 交易流水号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的申请流水号，32（位数）
      * @param string|null $asset_page 标的编号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的标的编号，6（位数）
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -275,6 +285,7 @@ class Rock
      * @param null|int $record_flag 冲正标志位，条件选填，默认所有，Y是 N否
      * @param null|string $transact_type 交易类型，条件选填，默认所有流水，B：金融流水，N：非金融流水
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -305,6 +316,7 @@ class Rock
      * @param string $order_id 	订单号，32（位数）
      * @param int $account_type 账户类型(普通户200201,企业户200204), 选填, 不填默认200201
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -322,6 +334,7 @@ class Rock
      * 网关自定义下单查询
      * @param string $order_id 订单号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -337,6 +350,7 @@ class Rock
      * 网关重置密码查询接口
      * @param string $order_id 订单号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -354,6 +368,7 @@ class Rock
      * @param int $card_type 绑定卡类型
      * @param null|string $out_serial_no 流水号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -381,6 +396,7 @@ class Rock
      * @param float $amount 冻结金额
      * @param null|string $out_serial_no 申请流水号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -402,6 +418,7 @@ class Rock
      * @param string $origin_serial_no 原交易流水号
      * @param null|string $out_serial_no 交易流水号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -423,6 +440,7 @@ class Rock
      * @param string $card_no 交易代码
      * @param string $origin_serial_no 原资金冻结交易流水号
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -440,6 +458,7 @@ class Rock
      * @param null|string $serial_no 交易流水号
      * @param int $currency 币种
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
@@ -454,8 +473,125 @@ class Rock
 
         return $this->send();
     }
-    
-    
+
+    /**
+     * @param float $amount 金额
+     * @param null|string $serial_no 交易流水号
+     * @param int $currency 币种
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function couponWithdraw($amount, $serial_no = null, $currency = RockConfig::CNY)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'amount' => $amount,
+                'serial_no' => $serial_no ?? uniqueId32(),
+                'currency' => $currency
+            ]);
+
+        return $this->send();
+    }
+
+    /**
+     * @param string $card_no 电子账户，必填,19(位数)
+     * @param string $bank_name 银行名称，必填,60(位数)
+     * @param string $bank_id_no 银行代码，必填
+     * @param float $amount 充值金额,必填,精确到分，13(位数)
+     * @param float $fee 手续费,选填,最大12位,保留两位
+     * @param null $order_no
+     * @param $bank_type
+     * @param null $customer_no
+     * @param null $product_name
+     * @param null $product_detail
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function bankRecharge(
+        $card_no,
+        $bank_name,
+        $bank_id_no,
+        $amount,
+        $fee = 0.00,
+        $order_no = null,
+        $bank_type = RockConfig::BANK_TYPE_COMMON,
+        $customer_no = null,
+        $product_name = null,
+        $product_detail = null)
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'card_no' => $card_no,
+                'bank_type' => $bank_type,
+                'callback_url' => $this->callback,
+                'customer_no' => $customer_no,
+                'redirect_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+                'product_name' => $product_name,
+                'product_detail' => $product_detail,
+                'order_no' => $order_no ?? uniqueId32(),
+                'bank_name' => $bank_name,
+                'bank_id_no' => $bank_id_no,
+                'amount' => $amount,
+                'fee' => $fee,
+        ]);
+
+        return $this->send();
+    }
+
+    public function rechargeP(
+        $card_no,
+        $bind_card,
+        $cert_no,
+        $name,
+        $mobile,
+        $amount,
+        $auth_flag,
+        $fee = 0.00,
+        $order_no = null,
+        $cert_type = RockConfig::CERT_TYPE_ID_CARD,
+        $currency = RockConfig::CNY,
+        $auth_seq_id = null,
+        $user_bank_code = null,
+        $user_bank_name_en = null,
+        $user_bank_name_cn = null,
+        $bank_province = null,
+        $bank_city = null,
+        $user_ip = null
+    )
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'order_no' => $order_no ?? uniqueId32(),
+                'card_no' => $card_no,
+                'bind_card' => $bind_card,
+                'currency' => $currency,
+                'amount' => $amount,
+                'fee' => $fee,
+                'cert_type' => $cert_type,
+                'cert_no'   => $cert_no,
+                'name' => $name,
+                'mobile' => $mobile,
+                'callback' => $this->callback,
+                'auth_flag' => $auth_flag,
+                'auth_seq_id' => $auth_seq_id,
+                'user_bank_code' => $user_bank_code,
+                'user_bank_name_en' => $user_bank_name_en,
+                'user_bank_name_cn' => $user_bank_name_cn,
+                'bank_province' => $bank_province,
+                'bank_city' => $bank_city,
+                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+                'user_ip' => $user_ip,
+                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            ]);
+
+        return $this->send();
+    }
+
     // =============================  批量处理接口 =================================//
 
     /**
@@ -488,11 +624,17 @@ class Rock
     /**
      * 发送请求
      * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
     protected function send()
     {
+        // 系统状态验证
+        if (Cache::has('rock_system_down')) {
+            throw new SystemDownException('系统维护中!', Cache::get('rock_system_down'));
+        }
+
         try {
             return $this->client->request($this->request);
         } catch (ResponseException $exception) {
