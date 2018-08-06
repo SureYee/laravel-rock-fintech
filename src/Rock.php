@@ -632,7 +632,7 @@ class Rock
     protected function send()
     {
         // 系统状态验证
-        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0]->timestamp <= now()) {
+        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()->timestamp) {
             throw new SystemDownException('系统维护中!');
         }
 
