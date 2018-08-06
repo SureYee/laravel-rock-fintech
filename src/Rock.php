@@ -9,7 +9,6 @@
 namespace Sureyee\LaravelRockFinTech;
 
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -543,6 +542,31 @@ class Rock
         return $this->send();
     }
 
+    /**
+     * 绑定卡到电子账户充值（页面）
+     * @param string $card_no 电子账户，必填,19(位数)
+     * @param string $bind_card 绑定卡卡号 ，必填，esb校验，19(位数)
+     * @param string $cert_no 证件号码 ，必填，18(位数)
+     * @param string $name 姓名 ，必填，60(位数)
+     * @param string $mobile 手机号码 ，必填，11(位数)
+     * @param string $amount 金额 ，必填，精确到分，13(位数)
+     * @param string $auth_flag ESB代发实名认证标志 ，必填，首次充值上送Y，之后充值上送N，1(位数)
+     * @param float $fee 充值手续费 ，必填，精确到分，12位保留两位
+     * @param null $order_no 订单编号 ,必填,32(位数)
+     * @param int $cert_type 证件类型 ， 15 ，必填，2(位数)
+     * @param int $currency 币种 ，必填，156，3(位数)
+     * @param null|string $auth_seq_id 实名认证流水号 ，条件可选，6(位数)
+     * @param null|string $user_bank_code 开户银行代码，条件可选 ，20(位数)
+     * @param null|string $user_bank_name_en 开户银行英文缩写，条件可选 ，20(位数)
+     * @param null|string $user_bank_name_cn 开户银行中文名称，条件可选 ，50(位数)
+     * @param null|string $bank_province 开户行省份，条件可选，20(位数)
+     * @param null|string $bank_city 开户行城市，条件可选，50(位数)
+     * @param null|string $user_ip 客户IP，条件可选，32(位数)
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
     public function rechargeP(
         $card_no,
         $bind_card,
@@ -597,8 +621,8 @@ class Rock
 
     /**
      * 批次还款
-     * @param array $items
-     * @param string $batch_type
+     * @param $items
+     * @param string $batch_type 业务类别 ,必填， 001-放款 002-到期还款 003-平台逾期代偿/担保公司代偿,(3)位数
      * @param null $batch_no
      * @param null $batch_date
      * @return false|\Sureyee\RockFinTech\Response
