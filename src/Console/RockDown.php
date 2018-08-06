@@ -34,7 +34,7 @@ class RockDown extends Command
             $this->error('请输入正确的系统暂停时长数值！');
         }
 
-        $end = (int) $hours === 0 ? null : $hours * 3600 + $start;
+        $end = (float) $hours === 0 ? null : $hours * 3600 + $start;
 
         $this->systemDown($start, $end);
 
