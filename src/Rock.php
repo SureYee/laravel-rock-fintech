@@ -632,7 +632,7 @@ class Rock
     {
         // 系统状态验证
         if (Cache::has('rock_system_down')) {
-            throw new SystemDownException('系统维护中!', Cache::get('rock_system_down'));
+            throw new SystemDownException('系统维护中!');
         }
 
         try {
