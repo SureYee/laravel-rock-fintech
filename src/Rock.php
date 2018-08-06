@@ -9,6 +9,7 @@
 namespace Sureyee\LaravelRockFinTech;
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -631,7 +632,7 @@ class Rock
     protected function send()
     {
         // 系统状态验证
-        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()) {
+        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0]->timestamp <= now()) {
             throw new SystemDownException('系统维护中!');
         }
 
