@@ -20,10 +20,9 @@ class RockUp extends Command
 
     public function handle()
     {
-        if (Cache::has('rock_system_down')) {
-            Cache::forget('rock_system_down');
+        if (Cache::has('rock_system_down') && Cache::forget('rock_system_down')) {
+            $this->info('钜石科技接口维护结束！');
         }
-
-        $this->info('钜石科技API接口启动完成');
+        $this->error('钜石科技接口开启失败！');
     }
 }

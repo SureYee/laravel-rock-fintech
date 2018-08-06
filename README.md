@@ -95,3 +95,17 @@ rock-fintech的laravel封装
     如果是推送到队列进行处理，抛出错误是没有办法被捕捉的。
     并且会直接输出`success`
     
+3. 系统维护
+
+    如果接口系统进入维护可以在`artisan`中执行命令来关闭接口的请求，**该功能不会影响业务的回调操作**。
+    
+    `php artisan rock:down` 命令会让系统进入维护状态，所有接口请求均会抛出`SystemDownException`错误。
+    
+    捕捉错误后可以通过`Rock::getSystemMaintenanceTime()` 方法获取系统维护的开始时间和结束时间。
+    
+    命令提供`--start`参数指定系统维护开始时间，如：`php artisan rock:down --start=tomorrow` 则明天开始进行维护
+    
+    命令提供`--h` 参数指定系统维护时长，单位是小时，如：`php artisan rock:down --h=2` 现在开始进入维护，维护时间2小时，2小时后自动开启服务。
+    
+    `php artisan rock:up` 手动启动系统服务
+    
