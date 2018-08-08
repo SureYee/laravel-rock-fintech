@@ -21,7 +21,7 @@ class RockDown extends Command
     public function handle()
     {
         $start = $this->option('start');
-        $hours = $this->option('h');
+        $hours = (float) $this->option('h');
 
         $start = strtotime($start);
 
@@ -34,7 +34,7 @@ class RockDown extends Command
             $this->error('请输入正确的系统暂停时长数值！');
         }
 
-        $end = (float) $hours === 0 ? null : $hours * 3600 + $start;
+        $end = $hours === 0.0 ? null : $hours * 3600 + $start;
 
         $this->systemDown($start, $end);
 
