@@ -600,7 +600,7 @@ class Rock
                 'cert_no'   => $cert_no,
                 'name' => $name,
                 'mobile' => $mobile,
-                'callback' => $this->callback,
+                'callback_url' => $this->callback,
                 'auth_flag' => $auth_flag,
                 'auth_seq_id' => $auth_seq_id,
                 'user_bank_code' => $user_bank_code,
@@ -615,6 +615,91 @@ class Rock
             ]);
 
         return $this->send();
+    }
+
+    /**
+     * 提现（页面）
+     * @param string $card_no 电子账户 ,必填,19(位数)
+     * @param string $bind_card 绑定卡号,必填,19(位数)
+     * @param string $bank_name 银行名称,大额提现必填,60(位数
+     * @param string $cert_no 证件号码 , 必填,18(位数)
+     * @param string $name 姓名 , 必填,60(位数)
+     * @param string $mobile 手机号码 ，必填,11(位数)
+     * @param float $amount 提现金额 ，必填,13位保留两位
+     * @param float $fee 手续费，必填,13位保留两位
+     * @param null|string $order_no 订单编号 ,必填,32(位数)
+     * @param int $sms_switch 必填,1位 备注:是否使用短信验证码(1:使用,其他:不使用)
+     * @param int $cert_type 证件类型 , 必填，15-身份证18位，20-其它，25-企业社会信用代码 注：企业开户时上送20或社会信用号25 ,2(位数)
+     * @param null $channel_flag
+     * @param null $channel_code
+     * @param null $union_bank_code
+     * @param null $open_bank_code
+     * @param null $bank_name_en
+     * @param null $bank_name_cn
+     * @param null $bank_province
+     * @param null $bank_city
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function withdrawP(
+        $card_no,
+        $bind_card,
+        $bank_name,
+        $cert_no,
+        $name,
+        $mobile,
+        $amount,
+        $fee = 0.00,
+        $order_no = null,
+        $sms_switch = 1,
+        $cert_type = RockConfig::CERT_TYPE_ID_CARD,
+        $channel_flag = null,
+        $channel_code = null,
+        $union_bank_code = null,
+        $open_bank_code = null,
+        $bank_name_en = null,
+        $bank_name_cn = null,
+        $bank_province = null,
+        $bank_city = null
+    )
+    {
+        $this->request->setService(snake_case(__FUNCTION__))
+            ->setParams([
+                'order_no' => $order_no ?? uniqueId32(),
+                'card_no' => $card_no,
+                'bind_card' => $bind_card,
+                'amount' => $amount,
+                'fee' => $fee,
+                'cert_type' => $cert_type,
+                'cert_no'   => $cert_no,
+                'name' => $name,
+                'mobile' => $mobile,
+                'callback_url' => $this->callback,
+                'bank_province' => $bank_province,
+                'bank_city' => $bank_city,
+                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+                'bank_name' => $bank_name,
+                'sms_switch' => $sms_switch,
+                'channel_flag' => $channel_flag,
+                'channel_code' => $channel_code,
+                'union_bank_code' => $union_bank_code,
+                'open_bank_code' => $open_bank_code,
+                'bank_name_en' => $bank_name_en,
+                'bank_name_cn' => $bank_name_cn
+            ]);
+
+        return $this->send();
+    }
+
+    // =============================  查询类接口 =================================//
+
+    public function batchQueryRepaymentB($batch_no, $batch_count, $batch_type = RockConfig::BATCH_TYPE_REPAY)
+    {
+
     }
 
     // =============================  批量处理接口 =================================//
