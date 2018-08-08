@@ -71,7 +71,7 @@ class Rock
             'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
             'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
             'callback_url' => $this->callback,
-            'out_serial_no' => is_null($out_serial_no) ? $this->uniqueId() : $out_serial_no,
+            'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
 
         $this->request->setParams($params);
@@ -99,7 +99,7 @@ class Rock
             'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
             'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
             'callback_url' => $this->callback,
-            'out_serial_no' => is_null($out_serial_no) ? $this->uniqueId() : $out_serial_no,
+            'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
 
         $this->request->setParams($params);
@@ -743,6 +743,7 @@ class Rock
     {
         if ($this->state()) {
             try {
+                Log::debug('rock-fin-tech request:', $this->request->getParams());
                 event(new RockBeforeRequest($this->request));
                 return $this->client->request($this->request);
             } catch (ResponseException $exception) {
