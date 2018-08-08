@@ -12,6 +12,7 @@ namespace Sureyee\LaravelRockFinTech;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Sureyee\LaravelRockFinTech\Console\RockDown;
+use Sureyee\LaravelRockFinTech\Console\RockState;
 use Sureyee\LaravelRockFinTech\Console\RockUp;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Request;
@@ -43,6 +44,7 @@ class RockServiceProvider extends ServiceProvider
             $this->commands([
                 RockDown::class,
                 RockUp::class,
+                RockState::class,
             ]);
         }
 
