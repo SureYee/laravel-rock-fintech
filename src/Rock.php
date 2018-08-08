@@ -740,17 +740,25 @@ class Rock
      */
     protected function send()
     {
-        // 系统状态验证
-        if (Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()->timestamp) {
-            throw new SystemDownException('系统维护中!');
+        if ($this->state()) {
+            try {
+                return $this->client->request($this->request);
+            } catch (ResponseException $exception) {
+                Log::error($exception->getMessage(), $this->request->getParams());
+            }
+            return false;
         }
+        throw new SystemDownException();
 
-        try {
-            return $this->client->request($this->request);
-        } catch (ResponseException $exception) {
-            Log::error($exception->getMessage(), $this->request->getParams());
-        }
-        return false;
+    }
+
+    /**
+     * 系统状态验证
+     * @return bool
+     */
+    public function state()
+    {
+        return !(Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()->timestamp);
     }
 
     /**

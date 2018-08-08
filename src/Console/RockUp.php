@@ -22,7 +22,9 @@ class RockUp extends Command
     {
         if (Cache::has('rock_system_down') && Cache::forget('rock_system_down')) {
             $this->info('钜石科技接口维护结束！');
+        } else {
+            $this->error('钜石科技接口开启失败！');
+            return 1;
         }
-        $this->error('钜石科技接口开启失败！');
     }
 }
