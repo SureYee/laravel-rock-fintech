@@ -28,6 +28,6 @@ class RockBeforeRequest
 
     public function broadcastOn()
     {
-        return new PrivateChannel('rtf-create-account');
+        return new PrivateChannel('rtf-before-request');
     }
 }
