@@ -25,7 +25,7 @@ class RockState extends Command
             $this->info('启用中');
         } else {
             $lockTime = Rock::getSystemMaintenanceTime();
-            $this->warn('维护中('.$lockTime[0].' - ' . $lockTime[1] ?? '永久' . ')');
+            $this->warn('维护中('.date('Y-m-d H:i:s', $lockTime[0]).' - ' .($lockTime[1] ?? '永久') . ')');
         }
     }
 }
