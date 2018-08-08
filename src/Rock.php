@@ -743,7 +743,7 @@ class Rock
     {
         if ($this->state()) {
             try {
-                Log::debug('rock-fin-tech request:', $this->request->getParams());
+                Log::debug('rock-fin-tech request:' .  $this->request->toJson());
                 event(new RockBeforeRequest($this->request));
                 return $this->client->request($this->request);
             } catch (ResponseException $exception) {
