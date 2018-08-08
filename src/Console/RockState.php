@@ -14,7 +14,7 @@ use Sureyee\LaravelRockFinTech\Facades\Rock;
 
 class RockState extends Command
 {
-    protected $signature = 'rock:status';
+    protected $signature = 'rock:state';
 
     protected $description = '查看接口状态';
 
