@@ -20,7 +20,7 @@ class RockState extends Command
 
     public function handle()
     {
-        $this->line('当前状态:');
+        $this->output->write('当前状态:');
         if (Rock::state()) {
             $this->info('启用中');
         } else {
