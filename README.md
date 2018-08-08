@@ -108,4 +108,8 @@ rock-fintech的laravel封装
     命令提供`--h` 参数指定系统维护时长，单位是小时，如：`php artisan rock:down --h=2` 现在开始进入维护，维护时间2小时，2小时后自动开启服务。
     
     `php artisan rock:up` 手动启动系统服务
+
+4. 事件
+
+    除了`Callback` 事件之外，还有一个 `RockBeforeRequest` 事件，会在请求之前触发，通过该事件，你可以将请求的数据，流水号等做好相应的记录，以便以后查询使用。
     
