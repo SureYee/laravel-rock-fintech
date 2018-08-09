@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Class Rock
  * @package Sureyee\LaravelRockFinTech\Facades
- * @method createAccountP()
- * @method batchRepaymentB()
- * @method boolean validSign(array $params)
+ * @method static createAccountP()
+ * @method static batchRepaymentB()
+ * @method static boolean validSign(array $params)
  */
 class Rock extends Facade
 {

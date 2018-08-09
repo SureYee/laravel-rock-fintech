@@ -698,7 +698,11 @@ class Rock
 
     // =============================  查询类接口 =================================//
 
-    public function batchQueryRepaymentB($batch_no, $batch_count, $batch_type = RockConfig::BATCH_TYPE_REPAY)
+    public function batchQueryRepaymentB(
+        $batch_no,
+        $batch_count,
+        $batch_type = RockConfig::BATCH_TYPE_REPAY
+    )
     {
 
     }
@@ -714,7 +718,12 @@ class Rock
      * @return false|\Sureyee\RockFinTech\Response
      * @throws
      */
-    public function batchRepaymentB(array $items, $batch_type = RockConfig::BATCH_TYPE_REPAY, $batch_no = null,  $batch_date = null)
+    public function batchRepaymentB(
+        array $items,
+        $batch_type = RockConfig::BATCH_TYPE_REPAY,
+        $batch_no = null,
+        $batch_date = null
+    )
     {
         $this->request->setService(snake_case(__FUNCTION__));
 
