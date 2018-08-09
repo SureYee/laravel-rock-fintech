@@ -28,7 +28,7 @@ class RockServiceProvider extends ServiceProvider
             $rft_org = Config::get('rock_fin_tech.rft_org');
             $pub_key = Config::get('rock_fin_tech.pub_key');
             $pri_key = Config::get('rock_fin_tech.pri_key');
-            return new Rock(new Client($rft_key, $rft_secret, $rft_org, $pub_key, $pri_key), new Request());
+            return new Rock(new Client($rft_key, $rft_secret, $rft_org, $pub_key, $pri_key));
         });
     }
 
