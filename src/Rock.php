@@ -733,6 +733,17 @@ class Rock
     }
 
     /**
+     * 设置custom参数
+     * @param string $custom
+     * @return Rock
+     */
+    public function custom(string $custom):Rock
+    {
+        $this->request->custom = $custom;
+        return $this;
+    }
+
+    /**
      * 发送请求
      * @return bool|\Sureyee\RockFinTech\Response
      * @throws SystemDownException
