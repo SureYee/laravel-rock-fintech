@@ -646,7 +646,7 @@ class Rock
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
-    public function withdrawP(
+    public function withdrawP (
         $card_no,
         $bind_card,
         $bank_name,
@@ -697,6 +697,449 @@ class Rock
 
         return $this->send();
     }
+
+    /**
+     * 借款人放款手续费和还款金额签约（页面）
+     * @param $card_no
+     * @param $payment_amount
+     * @param $repayment_amount
+     * @param null|string $out_serial_no
+     * @param $payment_start_time
+     * @param $repayment_start_time
+     * @param $payment_end_time
+     * @param $repayment_end_time
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signBorrowerP (
+        $card_no,
+        $payment_amount,
+        $repayment_amount,
+        $payment_start_time,
+        $repayment_start_time,
+        $payment_end_time,
+        $repayment_end_time,
+        $out_serial_no = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'payment_amount' => $payment_amount,
+            'repayment_amount' => $repayment_amount,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'payment_start_time' => $payment_start_time,
+            'repayment_start_time' => $repayment_start_time,
+            'payment_end_time' => $payment_end_time,
+            'repayment_end_time' => $repayment_end_time,
+            'callback_url' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
+    }
+
+    /**
+     * 放款手续费签约查询
+     * @param $card_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signPaymentQuery($card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('card_no'));
+
+        return $this->send();
+    }
+
+    /**
+     * 借款人还款金额签约查询
+     * @param $card_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signRepaymentQuery($card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('card_no'));
+
+        return $this->send();
+    }
+
+    /**
+     * 撤销借款人还款金额签约
+     * @param string $card_no
+     * @param string $origin_serial_no
+     * @param null|string $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokeRepayment($card_no, $origin_serial_no, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'origin_serial_no' => $origin_serial_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 撤销放款手续费签约
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param null $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokePayment($card_no, $origin_serial_no, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'origin_serial_no' => $origin_serial_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 转让方转让手续费签约（页面）
+     * @param $card_no
+     * @param $amount
+     * @param $start_time
+     * @param $end_time
+     * @param null $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signTransferP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'amount' => $amount,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'callback' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
+    }
+
+    /**
+     * 转让手续费签约查询
+     * @param $card_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signTransferCheck($card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('card_no'));
+
+        return $this->send();
+    }
+
+    /**
+     * 撤销转让方转让手续费签约
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokeTransfer($card_no, $origin_serial_no, $out_serial_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'origin_serial_no' => $origin_serial_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 签约累加（页面）
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param $interface_type
+     * @param $unit_amount
+     * @param $amount
+     * @param $start_time
+     * @param $end_time
+     * @param null $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signAgainP(
+        $card_no,
+        $origin_serial_no,
+        $interface_type,
+        $unit_amount,
+        $amount,
+        $start_time,
+        $end_time,
+        $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'origin_serial_no' => $origin_serial_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'interface_type' => $interface_type,
+            'unit_amount' => $unit_amount,
+            'amount' => $amount,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'callback_url' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 放款手续费签约（页面）
+     * @param $card_no
+     * @param $amount
+     * @param $start_time
+     * @param $end_time
+     * @param null $out_serial_no
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signFeeP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'amount' => $amount,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'callback_url' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    // ============================= 资产类接口 =================================//
+
+    /**
+     * 借款人标的登记
+     * @param $asset_no
+     * @param $asset_brief
+     * @param $card_no
+     * @param $amount
+     * @param $interest_type
+     * @param $interest_day
+     * @param $loan_term
+     * @param $interest_rate
+     * @param null $warrant_card_no
+     * @param null $borrow_card_no
+     * @param null $debtor_card_no
+     * @param $trustee_pay_flag
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function assetsEnroll(
+        $asset_no,
+        $asset_brief,
+        $card_no,
+        $amount,
+        $interest_type,
+        $interest_day,
+        $loan_term,
+        $interest_rate,
+        $warrant_card_no = null,
+        $borrow_card_no = null,
+        $debtor_card_no = null,
+        $trustee_pay_flag = RockConfig::TRUSTEE_PAY_FLAG_NORMAL,
+        $third_custom = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'asset_no' => $asset_no,
+            'asset_brief' => $asset_brief,
+            'card_no' => $card_no,
+            'amount' => $amount,
+            'interest_type' => $interest_type,
+            'interest_day' => $interest_day,
+            'loan_term' => $loan_term,
+            'interest_rate' => $interest_rate,
+            'warrant_card_no' => $warrant_card_no,
+            'borrow_card_no	' => $borrow_card_no,
+            'debtor_card_no' => $debtor_card_no,
+            'trustee_pay_flag' => $trustee_pay_flag,
+            'third_custom' => $third_custom,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 借款人标的撤销
+     * @param $asset_no
+     * @param $card_no
+     * @param $amount
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function assetsRevoke($asset_no, $card_no, $amount, $third_custom = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'asset_no' => $asset_no,
+            'card_no' => $card_no,
+            'amount' => $amount,
+            'third_custom' => $third_custom,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 借款人标的查询
+     * @param $asset_no
+     * @param $card_no
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function assetQuery($asset_no, $card_no, $third_custom = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'asset_no' => $asset_no,
+            'card_no' => $card_no,
+            'third_custom' => $third_custom,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 修改标的信息
+     * @param $asset_no
+     * @param $card_no
+     * @param $warranty_card_no
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function assetChange($asset_no, $card_no, $warranty_card_no, $third_custom = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'asset_no' => $asset_no,
+            'card_no' => $card_no,
+            'warranty_card_no' => $warranty_card_no,
+            'third_custom' => $third_custom,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 再贷标的余额查询
+     * @param $card_no
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function assetBalanceQuery($card_no, $third_custom = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'card_no' => $card_no,
+            'third_custom' => $third_custom,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    // ============================= 交易类接口 =================================//
+
+
+
+
 
     // =============================  查询类接口 =================================//
 

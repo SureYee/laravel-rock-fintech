@@ -11,7 +11,6 @@
     ],
     "require": {
         "php": ">=7.1",
-        "laravel/framework": "5.5.*",
         "sureyee/rock-fintech": "dev-master"
     },
     "autoload": {
