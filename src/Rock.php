@@ -1137,9 +1137,130 @@ class Rock
 
     // ============================= 交易类接口 =================================//
 
+    /**
+     * 投资人投标申请（页面）
+     * @param $card_no
+     * @param $amount
+     * @param $asset_no
+     * @param $interest_date
+     * @param $interest_type
+     * @param $end_date
+     * @param $interest_rate
+     * @param bool $use_bonus
+     * @param string $bonus_amount
+     * @param null $transact_date
+     * @param bool $frozen_flag
+     * @param null $interest_day
+     * @param null $out_serial_no
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function bidApplyP(
+        $card_no,
+        $amount,
+        $asset_no,
+        $interest_date,
+        $interest_type,
+        $end_date,
+        $interest_rate,
+        $use_bonus = false,
+        $bonus_amount = "0.00",
+        $transact_date = null,
+        $frozen_flag = true,
+        $interest_day = null,
+        $out_serial_no = null,
+        $third_custom = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
 
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'amount' => $amount,
+            'asset_no' => $asset_no,
+            'interest_date' => $interest_date,
+            'interest_type' => $interest_type,
+            'interest_day' => $interest_day,
+            'end_date' => $end_date,
+            'interest_rate' => $interest_rate,
+            'frozen_flag' => $frozen_flag,
+            'use_bonus' => $use_bonus,
+            'bonus_amount' => $bonus_amount,
+            'transact_date' => $transact_date ?? date('Y-m-d'),
+            'third_custom' => $third_custom,
+            'callback_url' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
 
+        $this->request->setParams($params);
+        return $this->send();
+    }
 
+    /**
+     * 投资人购买债权（页面）
+     * @param $card_no_in
+     * @param $origin_serial_no
+     * @param $card_no_out
+     * @param $total_balance
+     * @param $amount
+     * @param $transfer_price
+     * @param $interest_date
+     * @param $interest_rate
+     * @param $fee_way
+     * @param $fee
+     * @param $mobile
+     * @param null $out_serial_no
+     * @param null $third_custom
+     * @return bool|\Sureyee\RockFinTech\Response
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function buyCreditP(
+        $card_no_in,
+        $origin_serial_no,
+        $card_no_out,
+        $total_balance,
+        $amount,
+        $transfer_price,
+        $interest_date,
+        $interest_rate,
+        $fee_way,
+        $fee,
+        $mobile,
+        $out_serial_no = null,
+        $third_custom = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no_in' => $card_no_in,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'origin_serial_no' => $origin_serial_no,
+            'card_no_out' => $card_no_out,
+            'total_balance' => $total_balance,
+            'amount' => $amount,
+            'transfer_price' => $transfer_price,
+            'interest_date' => $interest_date,
+            'interest_rate' => $interest_rate,
+            'fee_way' => $fee_way,
+            'fee' => $fee,
+            'third_custom' => $third_custom,
+            'mobile' => $mobile,
+            'callback_url' => $this->callback,
+            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
 
     // =============================  查询类接口 =================================//
 
