@@ -38,6 +38,11 @@ class Rock
     protected $request;
 
     /**
+     * @var string $custom
+     */
+    protected $custom;
+
+    /**
      * 回调地址
      * @var string
      */
@@ -62,8 +67,6 @@ class Rock
      */
     public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__));
         $params = [
             'mobile' => $mobile,
             'account_type' => $account_type,
@@ -73,7 +76,7 @@ class Rock
             'callback_url' => $this->callback,
             'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
-
+        $this->request = new Request(snake_case(__FUNCTION__));
         $this->request->setParams($params);
 
         return $this->send();
@@ -91,9 +94,7 @@ class Rock
      */
     public function setPasswordP($customer_no, $card_no, $out_serial_no = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__));
-
+        $this->request = new Request(snake_case(__FUNCTION__));
         $params = [
             'customer_no' => $customer_no,
             'card_no' => $card_no,
@@ -130,8 +131,7 @@ class Rock
         $card_type= RockConfig::CARD_TYPE_MAIN
     )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__));
+        $this->request = new Request(snake_case(__FUNCTION__));
 
         $params = [
             'card_no' =>$card_no,
@@ -156,9 +156,8 @@ class Rock
      */
     public function accountMobile($card_no)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(['card_no' => $card_no]);
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(['card_no' => $card_no]);
 
         return $this->send();
     }
@@ -174,9 +173,8 @@ class Rock
      */
     public function accountBalance($card_no, $customer_no)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'customer_no' => $customer_no
             ]);
@@ -194,9 +192,8 @@ class Rock
      */
     public function marketingQuery($card_no, $type = RockConfig::MARKETING_SERVICE_TYPE)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'type' => $type
             ]);
@@ -215,9 +212,8 @@ class Rock
      */
     public function findAccountById($cert_no, $cert_type = RockConfig::CERT_TYPE_ID_CARD)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'cert_no' => $cert_no,
                 'cert_type' => $cert_type
             ]);
@@ -235,9 +231,8 @@ class Rock
      */
     public function findAccountByMobile($mobile)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'mobile' => $mobile,
             ]);
 
@@ -267,9 +262,8 @@ class Rock
         $out_serial_no = null,
         $asset_page = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'asset_no' => $asset_no,
                 'state' => $state,
@@ -310,9 +304,8 @@ class Rock
         $transact_type = null
         )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(compact(
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact(
                 'card_no', 'begin_date', 'end_date', 'current_result', 'total_result',
                 'type', 'order_by', 'record_flag', 'transact_type'
             ));
@@ -332,9 +325,8 @@ class Rock
      */
     public function createAccountSrQuery($order_id, $account_type = RockConfig::ACCOUNT_TYPE_COMMON)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(compact(
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact(
                 'order_id', 'account_type'
             ));
 
@@ -351,9 +343,8 @@ class Rock
      */
     public function gatewayQuery($order_id)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(compact('order_id'));
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('order_id'));
 
         return $this->send();
     }
@@ -368,9 +359,8 @@ class Rock
      */
     public function setPasswordQuery($order_id)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(compact('order_id'));
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('order_id'));
 
         return $this->send();
     }
@@ -387,9 +377,8 @@ class Rock
      */
     public function bindBankCardP($card_no,$card_type = RockConfig::CARD_TYPE_MAIN, $out_serial_no = null )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'card_type' => $card_type,
                 'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -416,9 +405,8 @@ class Rock
      */
     public function frozen($card_no, $amount, $out_serial_no = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'amount' =>$amount,
                 'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -439,9 +427,8 @@ class Rock
      */
     public function unfrozen($card_no, $amount, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'amount' => $amount,
                 'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -462,9 +449,8 @@ class Rock
      */
     public function frozenQuery($card_no, $origin_serial_no)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams(compact('card_no', 'origin_serial_no'));
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams(compact('card_no', 'origin_serial_no'));
 
         return $this->send();
     }
@@ -481,9 +467,8 @@ class Rock
      */
     public function couponRecharge($amount, $serial_no = null, $currency = RockConfig::CNY)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'amount' => $amount,
                 'serial_no' => $serial_no ?? uniqueId32(),
                 'currency' => $currency
@@ -503,9 +488,8 @@ class Rock
      */
     public function couponWithdraw($amount, $serial_no = null, $currency = RockConfig::CNY)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'amount' => $amount,
                 'serial_no' => $serial_no ?? uniqueId32(),
                 'currency' => $currency
@@ -542,9 +526,8 @@ class Rock
         $product_name = null,
         $product_detail = null)
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'card_no' => $card_no,
                 'bank_type' => $bank_type,
                 'callback_url' => $this->callback,
@@ -608,9 +591,8 @@ class Rock
         $user_ip = null
     )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'order_no' => $order_no ?? uniqueId32(),
                 'card_no' => $card_no,
                 'bind_card' => $bind_card,
@@ -686,9 +668,8 @@ class Rock
         $bank_city = null
     )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__))
-            ->setParams([
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $this->request->setParams([
                 'order_no' => $order_no ?? uniqueId32(),
                 'card_no' => $card_no,
                 'bind_card' => $bind_card,
@@ -746,8 +727,7 @@ class Rock
         $batch_date = null
     )
     {
-        $this->request = new Request();
-        $this->request->setService(snake_case(__FUNCTION__));
+        $this->request = new Request(snake_case(__FUNCTION__));
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -770,7 +750,7 @@ class Rock
      */
     public function custom(string $custom):Rock
     {
-        $this->request->custom = $custom;
+        $this->custom = $custom;
         return $this;
     }
 
@@ -783,8 +763,9 @@ class Rock
      */
     protected function send()
     {
-        if ($this->state()) {
+        if ($this->isRunning()) {
             try {
+                $this->request->custom = $this->custom;
                 Log::debug('rock-fin-tech request:' .  $this->request->toJson());
                 event(new RockBeforeRequest($this->request));
                 return $this->client->request($this->request);
@@ -798,10 +779,10 @@ class Rock
     }
 
     /**
-     * 系统状态验证
+     * 验证系统是否处于运行状态
      * @return bool
      */
-    public function state()
+    public function isRunning()
     {
         return !(Cache::has('rock_system_down') && Cache::get('rock_system_down')[0] <= now()->timestamp);
     }

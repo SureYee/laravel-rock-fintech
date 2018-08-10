@@ -18,11 +18,5 @@
         "psr-4": {
             "Sureyee\\LaravelRockFinTech\\" : "src"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@gitee.com:sureyee/rock-fintech.git"
-        }
-    ]
+    }
 }
