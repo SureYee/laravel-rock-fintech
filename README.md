@@ -116,6 +116,4 @@ rock-fintech的laravel封装 **接口封装不全，正在完善中**
      `RockBeforeRequest` 事件，会在请求之前触发，通过 `$event->request` 可以获得请求的 `Request` 对象。
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
-     
-     ``
     
