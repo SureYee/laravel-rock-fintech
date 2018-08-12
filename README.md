@@ -111,5 +111,9 @@ rock-fintech的laravel封装 **接口封装不全，正在完善中**
 
 4. 事件
 
-    除了`Callback` 事件之外，还有一个 `RockBeforeRequest` 事件，会在请求之前触发，通过该事件，你可以将请求的数据，流水号等做好相应的记录，以便以后查询使用。
+     `RockCallback` 事件。 `RockCallback` 事件用于处理接口的异步回调，如果没有在配置项中指定 `service` 的回调事件，则默认触发该事件。
+     
+     `RockBeforeRequest` 事件，会在请求之前触发，通过 `$event->request` 可以获得请求的 `Request` 对象。
+     
+     `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
