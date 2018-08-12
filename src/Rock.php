@@ -1332,7 +1332,8 @@ class Rock
                 $this->request->custom = $this->custom;
                 Log::debug('rock-fin-tech request:' .  $this->request->toJson());
                 event(new RockBeforeRequest($this->request));
-                return $this->client->request($this->request);
+                $response =  $this->client->request($this->request);
+                event(new )
             } catch (ResponseException $exception) {
                 Log::error($exception->getMessage(), $this->request->getParams());
             }
