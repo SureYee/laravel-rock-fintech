@@ -12,11 +12,13 @@ namespace Sureyee\LaravelRockFinTech;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Sureyee\LaravelRockFinTech\Events\RockAfterRequest;
 use Sureyee\LaravelRockFinTech\Events\RockBeforeRequest;
 use Sureyee\LaravelRockFinTech\Exceptions\SystemDownException;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Exceptions\ResponseException;
 use Sureyee\RockFinTech\Request;
+use Sureyee\RockFinTech\Response;
 use Sureyee\RockFinTech\RockConfig;
 
 /**
@@ -1330,10 +1332,12 @@ class Rock
         if ($this->isRunning()) {
             try {
                 $this->request->custom = $this->custom;
-                Log::debug('rock-fin-tech request:' .  $this->request->toJson());
+                Log::debug('钜石接口请求数据：' .  $this->request->toJson());
                 event(new RockBeforeRequest($this->request));
+                /** @var Response $response */
                 $response =  $this->client->request($this->request);
-                event(new )
+                Log::debug('钜石接口同步回调结果：', $response->toArray());
+                event(new RockAfterRequest($this->request, $response));
             } catch (ResponseException $exception) {
                 Log::error($exception->getMessage(), $this->request->getParams());
             }
