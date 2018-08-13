@@ -1322,7 +1322,8 @@ class Rock
 
     /**
      * 发送请求
-     * @return bool|\Sureyee\RockFinTech\Response
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
@@ -1330,18 +1331,14 @@ class Rock
     protected function send()
     {
         if ($this->isRunning()) {
-            try {
-                $this->request->custom = $this->custom;
-                Log::debug('钜石接口请求数据：' .  $this->request->toJson());
-                event(new RockBeforeRequest($this->request));
-                /** @var Response $response */
-                $response =  $this->client->request($this->request);
-                Log::debug('钜石接口同步回调结果：', $response->toArray());
-                event(new RockAfterRequest($this->request, $response));
-            } catch (ResponseException $exception) {
-                Log::error($exception->getMessage(), $this->request->getParams());
-            }
-            return false;
+            $this->request->custom = $this->custom;
+            Log::debug('钜石接口请求数据：' .  $this->request->toJson());
+            event(new RockBeforeRequest($this->request));
+            /** @var Response $response */
+            $response =  $this->client->request($this->request);
+            Log::debug('钜石接口同步回调结果：', $response->toArray());
+            event(new RockAfterRequest($this->request, $response));
+            return $response;
         }
         throw new SystemDownException();
 
