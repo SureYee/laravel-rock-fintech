@@ -21,7 +21,7 @@ class RockState extends Command
     public function handle()
     {
         $this->output->write('当前状态:');
-        if (Rock::state()) {
+        if (Rock::isRunning()) {
             $this->info('启用中');
         } else {
             $lockTime = Rock::getSystemMaintenanceTime();
