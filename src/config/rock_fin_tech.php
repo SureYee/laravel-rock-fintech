@@ -14,25 +14,19 @@ return [
 
     // 异步采用统一的回调地址，通过触发不同的事件来做出相应。
     'callback' => [
-        'bank_recharge' => null,
+
     ],
 
     'success_url' => [
-        'create_account_p' => 'http://example.com',
-        'bind_bank_card_p' => 'http://example.com',
-        'bank_recharge' => null,
-        'recharge_p' => null,
+        'default' => ''
     ],
 
     'fail_url' => [
-        'create_account_p' => 'http://example.com',
-        'bind_bank_card_p' => 'http://example.com',
-        'recharge_p' => null,
+        'default' => ''
     ],
 
     'forget_pwd_url' => [
-        'bind_bank_card_p' => 'http://example.com',
-        'recharge_p' => null,
+        'default' => ''
     ]
 
 

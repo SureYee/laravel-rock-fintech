@@ -384,9 +384,9 @@ class Rock
                 'card_no' => $card_no,
                 'card_type' => $card_type,
                 'out_serial_no' => $out_serial_no ?? uniqueId32(),
-                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+                'success_url' => $this->successUrl(__FUNCTION__),
+                'fail_url' => $this->failUrl(__FUNCTION__),
+                'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
                 'callback_url' => $this->callback,
             ]);
 
@@ -534,7 +534,7 @@ class Rock
                 'bank_type' => $bank_type,
                 'callback_url' => $this->callback,
                 'customer_no' => $customer_no,
-                'redirect_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
+                'redirect_url' => $this->successUrl(__FUNCTION__),
                 'product_name' => $product_name,
                 'product_detail' => $product_detail,
                 'order_no' => $order_no ?? uniqueId32(),
@@ -613,10 +613,10 @@ class Rock
                 'user_bank_name_cn' => $user_bank_name_cn,
                 'bank_province' => $bank_province,
                 'bank_city' => $bank_city,
-                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
+                'success_url' => $this->successUrl(__FUNCTION__),
+                'fail_url' => $this->failUrl(__FUNCTION__),
                 'user_ip' => $user_ip,
-                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+                'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
             ]);
 
         return $this->send();
@@ -684,9 +684,9 @@ class Rock
                 'callback_url' => $this->callback,
                 'bank_province' => $bank_province,
                 'bank_city' => $bank_city,
-                'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-                'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-                'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+                'success_url' => $this->successUrl(__FUNCTION__),
+                'fail_url' => $this->failUrl(__FUNCTION__),
+                'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
                 'bank_name' => $bank_name,
                 'sms_switch' => $sms_switch,
                 'channel_flag' => $channel_flag,
@@ -738,9 +738,9 @@ class Rock
             'payment_end_time' => $payment_end_time,
             'repayment_end_time' => $repayment_end_time,
             'callback_url' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
@@ -851,9 +851,9 @@ class Rock
             'start_time' => $start_time,
             'end_time' => $end_time,
             'callback' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
@@ -938,9 +938,9 @@ class Rock
             'start_time' => $start_time,
             'end_time' => $end_time,
             'callback_url' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
@@ -970,9 +970,9 @@ class Rock
             'start_time' => $start_time,
             'end_time' => $end_time,
             'callback_url' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
@@ -1194,9 +1194,9 @@ class Rock
             'transact_date' => $transact_date ?? date('Y-m-d'),
             'third_custom' => $third_custom,
             'callback_url' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
@@ -1255,14 +1255,315 @@ class Rock
             'third_custom' => $third_custom,
             'mobile' => $mobile,
             'callback_url' => $this->callback,
-            'success_url' => Config::get('rock_fin_tech.success_url.' . snake_case(__FUNCTION__)),
-            'fail_url' => Config::get('rock_fin_tech.fail_url.' . snake_case(__FUNCTION__)),
-            'forget_pwd_url' => Config::get('rock_fin_tech.forget_pwd_url.' . snake_case(__FUNCTION__)),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
         $this->request->setParams($params);
         return $this->send();
     }
+
+    /**
+     * 投资人自动投标签约
+     * @param $card_no
+     * @param $amount
+     * @param $unit_amount
+     * @param $start_time
+     * @param $end_time
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signAutoBidP(
+        $card_no,
+        $amount,
+        $unit_amount,
+        $start_time,
+        $end_time,
+        $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'amount' => $amount,
+            'unit_amount' => $unit_amount,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'callback_url' => $this->callback,
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 投标申请撤销
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param $amount
+     * @param $asset_no
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokeBid($card_no, $origin_serial_no, $amount, $asset_no, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'origin_serial_no' => $origin_serial_no,
+            'amount' => $amount,
+            'asset_no' => $asset_no
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 撤销自动投标签约
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokeAutoBid($card_no, $origin_serial_no, $out_serial_no = null)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'origin_serial_no' => $origin_serial_no,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 投资人自动投标签约状态查询
+     * @param $card_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signBidQuery($card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 自动投标申请
+     * @param $card_no
+     * @param $amount
+     * @param $auth_code
+     * @param $asset_no
+     * @param $interest_date
+     * @param $interest_type
+     * @param $interest_day
+     * @param $end_date
+     * @param $interest_rate
+     * @param bool $use_bonus
+     * @param float $bonus_amount
+     * @param bool $frozen_flag
+     * @param string $frozen_no
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function autoBidApply(
+        $card_no,
+        $amount,
+        $auth_code,
+        $asset_no,
+        $interest_date,
+        $interest_type,
+        $interest_day,
+        $end_date,
+        $interest_rate,
+        $use_bonus = false,
+        $bonus_amount = 0.00,
+        $frozen_flag = true,
+        $frozen_no = '',
+        $out_serial_no = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'amount' => $amount,
+            'use_bonus' => $use_bonus,
+            'bonus_amount' => $bonus_amount,
+            'auth_code' => $auth_code,
+            'asset_no' => $asset_no,
+            'interest_date' => $interest_date,
+            'interest_type' => $interest_type,
+            'interest_day' => $interest_day,
+            'end_day' => $end_date,
+            'interest_rate' => $interest_rate,
+            'frozen_flag' => $frozen_flag,
+            'frozen_no' => $frozen_no
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 受托支付申请 （页面）
+     * @param $card_no
+     * @param $debt_card_no
+     * @param $start_time
+     * @param $end_time
+     * @param string $third_custom
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function trusteePayP(
+        $card_no, 
+        $debt_card_no, 
+        $start_time,
+        $end_time,
+        $third_custom = '',
+        $out_serial_no = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'debt_card_no' => $debt_card_no,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'third_custom' => $third_custom,
+            'callback_url' => $this->callback,
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 受托支付查询
+     * @param $card_no
+     * @param $debt_card_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function trusteePayQuery($card_no, $debt_card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'debt_card_no' => $debt_card_no,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 受托支付撤销
+     * @param $card_no
+     * @param $debt_card_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function revokeTrusteePay($card_no, $debt_card_no)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'debt_card_no' => $debt_card_no,
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+
+    /**
+     * 自动债权转让签约（页面）
+     * @param $card_no
+     * @param $amount
+     * @param $unit_amount
+     * @param $start_time
+     * @param $end_time
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function signCreditTransferP(
+        $card_no, 
+        $amount, 
+        $unit_amount, 
+        $start_time,
+        $end_time,
+        $out_serial_no = null
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+        $params = [
+            'card_no' => $card_no,
+            'amount' => $amount,
+            'unit_amount' => $unit_amount,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'callback_url' => $this->callback,
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
+        ];
+
+        $this->request->setParams($params);
+        return $this->send();
+    }
+    
+    
 
     // =============================  查询类接口 =================================//
 
@@ -1341,7 +1642,6 @@ class Rock
             return $response;
         }
         throw new SystemDownException();
-
     }
 
     /**
@@ -1383,5 +1683,23 @@ class Rock
         } else {
             return null;
         }
+    }
+    
+    protected function successUrl($service)
+    {
+        $url = Config::get('rock_fin_tech.success_url.' . snake_case($service));
+        return $url ?? Config::get('rock_fin_tech.success_url.default');
+    }
+    
+    protected function failUrl($service)
+    {
+        $url = Config::get('rock_fin_tech.fail_url.' . snake_case($service));
+        return $url ?? Config::get('rock_fin_tech.success_url.default');
+    }
+    
+    protected function forgetPwdUrl($service)
+    {
+        $url = Config::get('rock_fin_tech.forget_pwd_url.' . snake_case($service));
+        return $url ?? Config::get('rock_fin_tech.success_url.default');
     }
 }
