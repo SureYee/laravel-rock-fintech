@@ -1611,6 +1611,40 @@ class Rock
     }
 
     /**
+     * 批次还款撤销
+     * @param array $items
+     * @param null $batch_date
+     * @param null $batch_no
+     * @param string $batch_type
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function batchRevokeRepaymentB(
+        array $items,
+        $batch_date = null,
+        $batch_no = null,
+        $batch_type = RockConfig::BATCH_TYPE_REPAY)
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'batch_no' => $batch_no ?? uniqid(),
+            'batch_type' => $batch_type,
+            'batch_count' => count($items),
+            'batch_date' => $batch_date ?? date('Ymd'),
+            'notify_url' => $this->callback,
+            'items' => $items
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
+    }
+
+    /**
      * 设置custom参数
      * @param string $custom
      * @return Rock
