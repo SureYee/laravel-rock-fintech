@@ -27,7 +27,9 @@ return [
 
     'forget_pwd_url' => [
         'default' => ''
-    ]
+    ],
+
+    'money_dispatch_account' => '', // 红包发放账户
 
 
 
