@@ -2400,6 +2400,57 @@ class Rock
         return $this->send();
     }
 
+    // ============================== 企业类接口 ==================================//
+
+
+    /**
+     * 线下账户信息入库
+     * @param $cert_no
+     * @param $name
+     * @param $mobile
+     * @param $bind_card
+     * @param $card_no
+     * @param $customer_no
+     * @param $serial_no
+     * @param $account_type
+     * @param int $role_type
+     * @return Response
+     * @throws ResponseException
+     * @throws SystemDownException
+     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
+     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     */
+    public function enterpriseAdd(
+        $cert_no,
+        $name,
+        $mobile,
+        $bind_card,
+        $card_no,
+        $customer_no,
+        $serial_no,
+        $account_type,
+        $role_type = RockConfig::ROLE_TYPE_LENDER
+    )
+    {
+        $this->request = new Request(snake_case(__FUNCTION__));
+
+        $params = [
+            'cert_no' => $cert_no,
+            'name' => $name,
+            'mobile' => $mobile,
+            'bind_card' => $bind_card,
+            'card_no' => $card_no,
+            'customer_no' => $customer_no,
+            'serial_no' => $serial_no,
+            'account_type' => $account_type,
+            'role_type' => $role_type,
+        ];
+
+        $this->request->setParams($params);
+
+        return $this->send();
+    }
+
     /**
      * 设置custom参数
      * @param string $custom
