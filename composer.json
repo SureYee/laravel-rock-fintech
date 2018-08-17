@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "sureyee/rock-fintech": "dev-master"
+        "sureyee/rock-fintech": "~1.0"
     },
     "autoload": {
         "psr-4": {
