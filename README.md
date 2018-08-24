@@ -117,3 +117,8 @@ rock-fintech的laravel封装 **接口封装不全，正在完善中**
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
+5. Feature
+    
+    1. 添加默认的request_log和response_log数据表，提供默认的revoke方法
+    
+    2. 添加钜石系统流水数据表，对于每天流水的sftp文件读取和数据表写入

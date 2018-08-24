@@ -17,5 +17,15 @@
         "psr-4": {
             "Sureyee\\LaravelRockFinTech\\" : "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers" : [
+                "Sureyee\\LaravelRockFinTech\\RockServiceProvider"
+            ],
+            "aliases": {
+                "Rock": "Sureyee\\LaravelRockFinTech\\Fcade\\Rock"
+            }
+        }
     }
 }
