@@ -782,10 +782,12 @@ class Rock
 
     /**
      * 撤销借款人还款金额签约
-     * @param string $card_no
-     * @param string $origin_serial_no
-     * @param null|string $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
+     *
+     * @param $card_no
+     * @param $origin_serial_no
+     * @param null $out_serial_no
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
@@ -809,7 +811,8 @@ class Rock
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
@@ -835,7 +838,8 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
