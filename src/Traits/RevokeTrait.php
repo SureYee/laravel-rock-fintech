@@ -17,24 +17,54 @@ trait RevokeTrait
 {
     use RequestTrait;
 
-    private $canRevokedServices = [
-        'frozen',
-        ''
+    private $revokeSetting = [
+        'frozen' => 'frozen',
+        'sign_borrower_p' => [
+            'repayment' => 'repayment',
+            'payment' => 'payment'
+        ]
     ];
 
     /**
+     * @param null|string $revokeService
      * @return ResponseInterface
      * @throws CantRevokedServiceException
      */
-    public function revoke():ResponseInterface
+    public function revoke($revokeService = null):ResponseInterface
     {
         $service = $this->getService();
 
-        if (in_array($service, $this->canRevokedServices)) {
-            $method = camel_case('revoke_' . $service);
+        if ($this->canRevoke()) {
+            $setting = $this->revokeSetting[$service];
+            $method = $this->getMethodFromSetting($setting, $revokeService);
             return $this->$method();
         }
         throw new CantRevokedServiceException($service);
+    }
+
+    /**
+     * @param $setting
+     * @param $revokeService
+     * @return string
+     * @throws CantRevokedServiceException
+     */
+    protected function getMethodFromSetting($setting, $revokeService)
+    {
+        $prefix = 'revoke_';
+        if (is_array($setting) && array_key_exists($revokeService, $setting))
+            return $prefix . $setting[$revokeService];
+
+        if (is_string($setting)) return $prefix . $setting;
+
+        throw new CantRevokedServiceException($revokeService);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canRevoke()
+    {
+        return array_key_exists($this->getService(), $this->revokeSetting);
     }
 
     /**
