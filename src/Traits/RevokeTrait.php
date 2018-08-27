@@ -22,7 +22,11 @@ trait RevokeTrait
         'sign_borrower_p' => [
             'repayment' => 'repayment',
             'payment' => 'payment'
-        ]
+        ],
+        'sign_transfer_p' => 'transfer',
+        'bid_apply_p' => 'bid',
+        'sign_auto_bid_p' => 'auto_bid',
+        'trustee_pay_p' => 'trustee_pay',
     ];
 
     /**
@@ -98,8 +102,58 @@ trait RevokeTrait
         return Rock::revokePayment($request->card_no, $this->getSerialNo());
     }
 
-    protected function revokeTransfer()
+    /**
+     * 撤销转让方转让手续费签约
+     * @return ResponseInterface
+     */
+    protected function revokeTransfer():ResponseInterface
     {
+        $request = $this->getRequestData();
 
+        return Rock::revokeTransfer($request->card_no, $this->getSerialNo());
+    }
+
+    /**
+     * 借款人标的撤销
+     * @return ResponseInterface
+     */
+    protected function revokeAsset():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::assetsRevoke($request->asset_no, $request->card_no, $request->amount, $this->getThirdCustom());
+    }
+
+    /**
+     * 投标申请撤销
+     * @return ResponseInterface
+     */
+    protected function revokeBid():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::revokeBid($request->card_no, $this->getSerialNo(), $request->amount, $request->asset_no);
+    }
+
+    /**
+     * 撤销自动投标签约
+     * @return ResponseInterface
+     */
+    protected function revokeAutoBid():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::revokeAutoBid($request->card_no, $this->getSerialNo());
+    }
+
+    /**
+     * 受托支付撤销
+     * @return ResponseInterface
+     */
+    protected function revokeTrusteePay():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::revokeTrusteePay($request->card_no, $request->debt_card_no);
     }
 }

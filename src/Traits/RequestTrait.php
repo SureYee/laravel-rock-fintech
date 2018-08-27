@@ -13,6 +13,9 @@ use Sureyee\RockFinTech\Request;
 
 trait RequestTrait
 {
+
+    protected $rftThirdCustom = null;
+
     /**
      * @return Request
      */
@@ -32,5 +35,20 @@ trait RequestTrait
     public function getSerialNo()
     {
         return $this->serial_no;
+    }
+
+    public function getThirdCustom()
+    {
+        return $this->rftThirdCustom;
+    }
+
+    /**
+     * @param $thirdCustom
+     * @return $this
+     */
+    public function setThirdCustom($thirdCustom)
+    {
+        $this->rftThirdCustom = $thirdCustom;
+        return $this;
     }
 }
