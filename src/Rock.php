@@ -868,7 +868,8 @@ class Rock
     /**
      * 转让手续费签约查询
      * @param $card_no
-     * @return bool|\Sureyee\RockFinTech\Response
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
@@ -891,7 +892,7 @@ class Rock
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
-    public function revokeTransfer($card_no, $origin_serial_no, $out_serial_no)
+    public function revokeTransfer($card_no, $origin_serial_no, $out_serial_no = null)
     {
         $this->request = new Request(snake_case(__FUNCTION__));
 
@@ -1049,7 +1050,8 @@ class Rock
      * @param $card_no
      * @param $amount
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
+     * @return Response
+     * @throws ResponseException
      * @throws SystemDownException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
@@ -2478,11 +2480,9 @@ class Rock
     {
         if ($this->isRunning()) {
             $this->request->custom = $this->custom;
-            Log::debug('钜石接口请求数据：' .  $this->request->toJson());
             event(new RockBeforeRequest($this->request));
             /** @var Response $response */
             $response =  $this->client->request($this->request);
-            Log::debug('钜石接口同步回调结果：', $response->toArray());
             event(new RockAfterRequest($this->request, $response));
             return $response;
         }

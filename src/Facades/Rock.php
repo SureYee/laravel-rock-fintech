@@ -14,13 +14,18 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Class Rock
  * @package Sureyee\LaravelRockFinTech\Facades
- * @method static createAccountP()
+ * @method static createAccountP($mobile)
  * @method static batchRepaymentB()
  * @method static boolean validSign(array $params)
  * @method static unfrozen(string $card_no, $amount, $origin_serial_no, $out_serial_no = null)
  * @method static revokeRepayment($card_no, $origin_serial_no, $out_serial_no = null)
  * @method static revokePayment($card_no, $origin_serial_no, $out_serial_no = null)
  * @method static signTransferP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
+ * @method static revokeTransfer($card_no, $origin_serial_no, $out_serial_no = null)
+ * @method static assetsRevoke($asset_no, $card_no, $amount, $third_custom = null)
+ * @method static revokeBid($card_no, $origin_serial_no, $amount, $asset_no, $out_serial_no = null)
+ * @method static revokeAutoBid($card_no, $origin_serial_no, $out_serial_no = null)
+ * @method static revokeTrusteePay($card_no, $debt_card_no)
  */
 class Rock extends Facade
 {
