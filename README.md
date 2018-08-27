@@ -1,7 +1,7 @@
 # laravel钜石接口API
 
 #### 项目介绍
-rock-fintech的laravel封装 **接口封装不全，正在完善中**
+rock-fintech的laravel封装，加入事件，控制台等机制。
 
 
 #### 安装说明
