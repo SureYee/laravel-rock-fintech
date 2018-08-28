@@ -10,6 +10,7 @@ namespace Sureyee\LaravelRockFinTech\Facades;
 
 
 use Illuminate\Support\Facades\Facade;
+use Sureyee\RockFinTech\RockConfig;
 
 /**
  * Class Rock
@@ -26,6 +27,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static revokeBid($card_no, $origin_serial_no, $amount, $asset_no, $out_serial_no = null)
  * @method static revokeAutoBid($card_no, $origin_serial_no, $out_serial_no = null)
  * @method static revokeTrusteePay($card_no, $debt_card_no)
+ * @method static revokeCreditTransfer($card_no, $origin_serial_no, $third_custom = null, $out_serial_no = null)
+ * @method static revokeWarrant($card_no, $origin_serial_no, $out_serial_no = null)
+ * @method static moneyRevoke($origin_timestamp,$origin_serial_no,$card_no_in,$amount,$card_no = null,$currency = RockConfig::CNY,$description = null)
+ * @method static batchRevokeBuyCreditB(array $items,$batch_no = null,$batch_date = null)
  */
 class Rock extends Facade
 {

@@ -12,6 +12,8 @@ namespace Sureyee\LaravelRockFinTech\Traits;
 use Sureyee\LaravelRockFinTech\Exceptions\CantRevokedServiceException;
 use Sureyee\LaravelRockFinTech\Facades\Rock;
 use Sureyee\RockFinTech\Contracts\ResponseInterface;
+use Sureyee\RockFinTech\Request;
+use Sureyee\RockFinTech\Response;
 
 trait RevokeTrait
 {
@@ -27,6 +29,10 @@ trait RevokeTrait
         'bid_apply_p' => 'bid',
         'sign_auto_bid_p' => 'auto_bid',
         'trustee_pay_p' => 'trustee_pay',
+        'sign_credit_transfer_p' => 'credit_transfer',
+        'sign_warrant_p' => 'warrant',
+        'money_dispatch' => 'money',
+        'batch_buy_credit_b' => 'buy_credit_batch'
     ];
 
     /**
@@ -155,5 +161,46 @@ trait RevokeTrait
         $request = $this->getRequestData();
 
         return Rock::revokeTrusteePay($request->card_no, $request->debt_card_no);
+    }
+
+    /**
+     * 撤销自动债权转让签约
+     * @return ResponseInterface
+     */
+    protected function revokeCreditTransfer():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::revokeCreditTransfer($request->card_no, $this->getSerialNo(), $this->getThirdCustom());
+    }
+
+    /**
+     * 撤销借款人还款担保人金额签约
+     * @return ResponseInterface
+     */
+    protected function revokeWarrant():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::revokeWarrant($request->card_no, $this->getSerialNo());
+    }
+
+    /**
+     * 红包发放撤销
+     * @return ResponseInterface
+     */
+    protected function revokeMoney():ResponseInterface
+    {
+        $request = $this->getRequestData();
+
+        return Rock::moneyRevoke(
+            $request->timestamp,
+            $request->out_serial_no,
+            $request->card_no_in,
+            $request->amount,
+            $request->card_no,
+            $request->currency,
+            $description = $this->getDescription()
+        );
     }
 }

@@ -14,7 +14,7 @@ use Sureyee\RockFinTech\Request;
 trait RequestTrait
 {
 
-    protected $rftThirdCustom = null;
+    protected $rftCustoms = [];
 
     /**
      * @return Request
@@ -29,17 +29,17 @@ trait RequestTrait
      */
     public function getService()
     {
-        return $this->service;
+        return array_key_exists('service', $this->rftCustoms) ? $this->rftCustoms['service'] : null;
     }
 
     public function getSerialNo()
     {
-        return $this->serial_no;
+        return array_key_exists('service', $this->rftCustoms) ? $this->rftCustoms['serial_no'] : null;
     }
 
     public function getThirdCustom()
     {
-        return $this->rftThirdCustom;
+        return array_key_exists('service', $this->rftCustoms) ? $this->rftCustoms['third_custom'] : null;
     }
 
     /**
@@ -48,7 +48,25 @@ trait RequestTrait
      */
     public function setThirdCustom($thirdCustom)
     {
-        $this->rftThirdCustom = $thirdCustom;
+        $this->rftCustoms['third_custom'] = $thirdCustom;
         return $this;
+    }
+
+    /**
+     * @param $description
+     * @return $this
+     */
+    public function setDescription(string $description)
+    {
+        $this->rftCustoms['description'] = $description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return array_key_exists('service', $this->rftCustoms) ? $this->rftCustoms['description'] : null;
     }
 }
