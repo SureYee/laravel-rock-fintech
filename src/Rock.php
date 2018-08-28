@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Sureyee\LaravelRockFinTech\Events\RockAfterRequest;
 use Sureyee\LaravelRockFinTech\Events\RockBeforeRequest;
 use Sureyee\LaravelRockFinTech\Exceptions\SystemDownException;
+use Sureyee\LaravelRockFinTech\Requests\ItemsRequest;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Exceptions\ResponseException;
 use Sureyee\RockFinTech\Request;
@@ -1875,14 +1876,14 @@ class Rock
 
     /**
      * 批次放款
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param string $batch_type
      * @param null $batch_no
      * @param null $batch_date
      * @return Rock
      */
     public function batchPaymentB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_type = RockConfig::BATCH_TYPE_PAY,
         $batch_no = null,
         $batch_date = null
@@ -1893,10 +1894,10 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
@@ -1906,14 +1907,14 @@ class Rock
 
     /**
      * 批次还款
-     * @param $items
+     * @param ItemsRequest $itemsRequest
      * @param string $batch_type 业务类别 ,必填， 001-放款 002-到期还款 003-平台逾期代偿/担保公司代偿,(3)位数
      * @param null $batch_no
      * @param null $batch_date
      * @return Rock
      */
     public function batchRepaymentB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_type = RockConfig::BATCH_TYPE_REPAY,
         $batch_no = null,
         $batch_date = null
@@ -1924,10 +1925,10 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
@@ -1937,12 +1938,12 @@ class Rock
 
     /**
      * 批次投资人购买债权
-     * @param array $items
+     * @param ItemsRequest $itemsRequest,
      * @param null $batch_no
      * @return Rock
      */
     public function batchBuyCreditB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_no = null
     )
     {
@@ -1950,9 +1951,9 @@ class Rock
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
@@ -1962,43 +1963,39 @@ class Rock
 
     /**
      * 批次投资人购买债权撤销
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param null $batch_no
      * @param null $batch_date
      * @return Rock
      */
     public function batchRevokeBuyCreditB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_no = null,
         $batch_date = null
     )
     {
-        
-
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
-
-
     }
 
 
     /**
      * 批次放款撤销
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param string $batch_type
      * @param null $batch_no
      * @param null $batch_date
      * @return Rock
      */
     public function batchRevokePaymentB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_type = RockConfig::BATCH_TYPE_PAY,
         $batch_no = null,
         $batch_date = null
@@ -2009,10 +2006,10 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
@@ -2052,14 +2049,14 @@ class Rock
 
     /**
      * 批次结束债权
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param null $batch_date
      * @param null $batch_no
      * @param string $batch_type
      * @return Rock
      */
     public function batchEndCreditB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_date = null,
         $batch_no = null,
         $batch_type = RockConfig::BATCH_TYPE_REPAY
@@ -2070,9 +2067,9 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
@@ -2082,12 +2079,12 @@ class Rock
 
     /**
      * 存管账户批量红包发放
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param null $batch_no
      * @return Rock
      */
     public function batchCouponB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_no = null
     )
     {
@@ -2095,9 +2092,9 @@ class Rock
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer()
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
