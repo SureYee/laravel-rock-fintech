@@ -1,7 +1,9 @@
 # laravel钜石接口API
 
 #### 项目介绍
-rock-fintech的laravel封装
+
+rock-fintech的laravel封装，加入事件，控制台等机制。
+
 
 
 #### 安装说明
@@ -117,9 +119,17 @@ rock-fintech的laravel封装
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
+<<<<<<< HEAD
 5. 更新记录
 
     | 版本号 | 更新内容 |
     |:-------:|-------|
     | v1.1.0|修改接口的访问方式|
     
+=======
+5. Feature
+    
+    1. 添加默认的request_log和response_log数据表，提供默认的revoke方法
+    
+    2. 添加钜石系统流水数据表，对于每天流水的sftp文件读取和数据表写入
+>>>>>>> dev
