@@ -1,7 +1,7 @@
 # laravel钜石接口API
 
 #### 项目介绍
-rock-fintech的laravel封装 **接口封装不全，正在完善中**
+rock-fintech的laravel封装
 
 
 #### 安装说明
@@ -33,7 +33,7 @@ rock-fintech的laravel封装 **接口封装不全，正在完善中**
     ```php
        // 注册账户
        $mobile = '18666666666';
-       $response = Rock::createAccountP($mobile);
+       $response = Rock::createAccountP($mobile)->send();
        // 同步回调
        if ($response->isSuccess()) {
            // do...sth...
@@ -116,4 +116,10 @@ rock-fintech的laravel封装 **接口封装不全，正在完善中**
      `RockBeforeRequest` 事件，会在请求之前触发，通过 `$event->request` 可以获得请求的 `Request` 对象。
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
+    
+5. 更新记录
+
+    | 版本号 | 更新内容 |
+    |:-------:|-------|
+    | v1.1.0|修改接口的访问方式|
     
