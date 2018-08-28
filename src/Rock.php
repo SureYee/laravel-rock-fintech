@@ -64,8 +64,7 @@ class Rock
      * @param int $role_type
      * @param int $account_type
      * @param null $out_serial_no
-     * @return false|\Sureyee\RockFinTech\Response
-     * @throws
+     * @return Rock
      */
     public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
@@ -78,10 +77,8 @@ class Rock
             'callback_url' => $this->callback,
             'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams($params);
-
-        return $this->send();
+        
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -89,14 +86,10 @@ class Rock
      * @param $customer_no
      * @param $card_no
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function setPasswordP($customer_no, $card_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
         $params = [
             'customer_no' => $customer_no,
             'card_no' => $card_no,
@@ -106,9 +99,7 @@ class Rock
             'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
 
-        $this->request->setParams($params);
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -119,10 +110,7 @@ class Rock
      * @param $serial_no
      * @param $bank_mobile
      * @param $card_type
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function unbindBankCard(
         $card_no,
@@ -133,8 +121,6 @@ class Rock
         $card_type= RockConfig::CARD_TYPE_MAIN
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-
         $params = [
             'card_no' =>$card_no,
             'bank_card_no' => $bank_card_no,
@@ -144,101 +130,76 @@ class Rock
             'card_type' => $card_type,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * 电子账户查询
      * @param string $card_no 电子账号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function accountMobile($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(['card_no' => $card_no]);
+        
+        $params = ['card_no' => $card_no];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * 电子账户余额查询
      * @param string $card_no 电子账号
      * @param string $customer_no 客户号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function accountBalance($card_no, $customer_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'customer_no' => $customer_no
-            ]);
+        
+        $params = [
+            'card_no' => $card_no,
+            'customer_no' => $customer_no
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * @param string $card_no 电子账号
      * @param int $type 营销户类型
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function marketingQuery($card_no, $type = RockConfig::MARKETING_SERVICE_TYPE)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'type' => $type
-            ]);
+        $params = [
+            'card_no' => $card_no,
+            'type' => $type
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * 个人户按证件号查询电子账号
      * @param string $cert_no 证件号
      * @param int $cert_type 证件类型
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function findAccountById($cert_no, $cert_type = RockConfig::CERT_TYPE_ID_CARD)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'cert_no' => $cert_no,
-                'cert_type' => $cert_type
-            ]);
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, [
+            'cert_no' => $cert_no,
+            'cert_type' => $cert_type
+        ]);
     }
 
     /**
      * 按手机号查询电子账号信息
      * @param string $mobile 手机号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function findAccountByMobile($mobile)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'mobile' => $mobile,
-            ]);
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, ['mobile' => $mobile,]);
     }
 
     /**
@@ -250,10 +211,7 @@ class Rock
      * @param string|null $buy_date 投标日期，有条件必填，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的投标日期，8（位数）
      * @param string|null $out_serial_no 交易流水号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的申请流水号，32（位数）
      * @param string|null $asset_page 标的编号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的标的编号，6（位数）
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function accountCredits(
         $card_no,
@@ -264,18 +222,18 @@ class Rock
         $out_serial_no = null,
         $asset_page = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'asset_no' => $asset_no,
-                'state' => $state,
-                'page_flag' => $page_flag,
-                'buy_date' => $buy_date,
-                'out_serial_no' => $out_serial_no,
-                'asset_page' => $asset_page,
-            ]);
+        
+        $params = [
+            'card_no' => $card_no,
+            'asset_no' => $asset_no,
+            'state' => $state,
+            'page_flag' => $page_flag,
+            'buy_date' => $buy_date,
+            'out_serial_no' => $out_serial_no,
+            'asset_page' => $asset_page,
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -289,10 +247,7 @@ class Rock
      * @param null|int $order_by 排序，条件选填，默认正序 1：正序 2：倒序
      * @param null|int $record_flag 冲正标志位，条件选填，默认所有，Y是 N否
      * @param null|string $transact_type 交易类型，条件选填，默认所有流水，B：金融流水，N：非金融流水
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function accountTransactionQuery(
         $card_no,
@@ -306,13 +261,10 @@ class Rock
         $transact_type = null
         )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact(
-                'card_no', 'begin_date', 'end_date', 'current_result', 'total_result',
-                'type', 'order_by', 'record_flag', 'transact_type'
-            ));
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, compact(
+            'card_no', 'begin_date', 'end_date', 'current_result', 'total_result',
+            'type', 'order_by', 'record_flag', 'transact_type'
+        ));
     }
 
 
@@ -320,51 +272,33 @@ class Rock
      * 开户结果查询接口
      * @param string $order_id 	订单号，32（位数）
      * @param int $account_type 账户类型(普通户200201,企业户200204), 选填, 不填默认200201
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function createAccountSrQuery($order_id, $account_type = RockConfig::ACCOUNT_TYPE_COMMON)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact(
-                'order_id', 'account_type'
-            ));
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, compact(
+            'order_id', 'account_type'
+        ));
     }
 
     /**
      * 网关自定义下单查询
      * @param string $order_id 订单号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function gatewayQuery($order_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('order_id'));
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, compact('order_id'));
     }
 
     /**
      * 网关重置密码查询接口
      * @param string $order_id 订单号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function setPasswordQuery($order_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('order_id'));
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, compact('order_id'));
     }
 
     /**
@@ -372,25 +306,22 @@ class Rock
      * @param string $card_no 电子账户
      * @param int $card_type 绑定卡类型
      * @param null|string $out_serial_no 流水号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function bindBankCardP($card_no,$card_type = RockConfig::CARD_TYPE_MAIN, $out_serial_no = null )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'card_type' => $card_type,
-                'out_serial_no' => $out_serial_no ?? uniqueId32(),
-                'success_url' => $this->successUrl(__FUNCTION__),
-                'fail_url' => $this->failUrl(__FUNCTION__),
-                'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
-                'callback_url' => $this->callback,
-            ]);
+        
+        $params = [
+            'card_no' => $card_no,
+            'card_type' => $card_type,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
+            'callback_url' => $this->callback,
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     // ==============================  资金类接口 ==================================//
@@ -400,21 +331,18 @@ class Rock
      * @param string $card_no 电子账号
      * @param float $amount 冻结金额
      * @param null|string $out_serial_no 申请流水号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function frozen($card_no, $amount, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'amount' =>$amount,
-                'out_serial_no' => $out_serial_no ?? uniqueId32(),
-            ]);
+        
+        $params = [
+            'card_no' => $card_no,
+            'amount' =>$amount,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -422,39 +350,33 @@ class Rock
      * @param float $amount 原冻结金额
      * @param string $origin_serial_no 原交易流水号
      * @param null|string $out_serial_no 交易流水号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function unfrozen($card_no, $amount, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
-                'card_no' => $card_no,
-                'amount' => $amount,
-                'out_serial_no' => $out_serial_no ?? uniqueId32(),
-                'origin_serial_no' => $origin_serial_no,
-            ]);
+        
+        $params = [
+            'card_no' => $card_no,
+            'amount' => $amount,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'origin_serial_no' => $origin_serial_no,
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * 资金冻结查询
      * @param string $card_no 交易代码
      * @param string $origin_serial_no 原资金冻结交易流水号
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function frozenQuery($card_no, $origin_serial_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('card_no', 'origin_serial_no'));
+        
+        $params = compact('card_no', 'origin_serial_no');
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -462,42 +384,36 @@ class Rock
      * @param float $amount 金额
      * @param null|string $serial_no 交易流水号
      * @param int $currency 币种
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function couponRecharge($amount, $serial_no = null, $currency = RockConfig::CNY)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
+        
+        $params = [
                 'amount' => $amount,
                 'serial_no' => $serial_no ?? uniqueId32(),
                 'currency' => $currency
-            ]);
+            ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * @param float $amount 金额
      * @param null|string $serial_no 交易流水号
      * @param int $currency 币种
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function couponWithdraw($amount, $serial_no = null, $currency = RockConfig::CNY)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
+        
+        $params = [
                 'amount' => $amount,
                 'serial_no' => $serial_no ?? uniqueId32(),
                 'currency' => $currency
-            ]);
+            ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -511,10 +427,7 @@ class Rock
      * @param null $customer_no
      * @param null $product_name
      * @param null $product_detail
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function bankRecharge(
         $card_no,
@@ -528,8 +441,8 @@ class Rock
         $product_name = null,
         $product_detail = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
+        
+        $params = [
                 'card_no' => $card_no,
                 'bank_type' => $bank_type,
                 'callback_url' => $this->callback,
@@ -542,9 +455,9 @@ class Rock
                 'bank_id_no' => $bank_id_no,
                 'amount' => $amount,
                 'fee' => $fee,
-        ]);
+        ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -567,10 +480,7 @@ class Rock
      * @param null|string $bank_province 开户行省份，条件可选，20(位数)
      * @param null|string $bank_city 开户行城市，条件可选，50(位数)
      * @param null|string $user_ip 客户IP，条件可选，32(位数)
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function rechargeP(
         $card_no,
@@ -593,8 +503,8 @@ class Rock
         $user_ip = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
+        
+        $params = [
                 'order_no' => $order_no ?? uniqueId32(),
                 'card_no' => $card_no,
                 'bind_card' => $bind_card,
@@ -617,9 +527,9 @@ class Rock
                 'fail_url' => $this->failUrl(__FUNCTION__),
                 'user_ip' => $user_ip,
                 'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
-            ]);
+            ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -643,10 +553,7 @@ class Rock
      * @param null $bank_name_cn
      * @param null $bank_province
      * @param null $bank_city
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function withdrawP (
         $card_no,
@@ -670,8 +577,8 @@ class Rock
         $bank_city = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams([
+        
+        $params = [
                 'order_no' => $order_no ?? uniqueId32(),
                 'card_no' => $card_no,
                 'bind_card' => $bind_card,
@@ -695,9 +602,9 @@ class Rock
                 'open_bank_code' => $open_bank_code,
                 'bank_name_en' => $bank_name_en,
                 'bank_name_cn' => $bank_name_cn
-            ]);
+            ];
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -710,10 +617,7 @@ class Rock
      * @param $repayment_start_time
      * @param $payment_end_time
      * @param $repayment_end_time
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signBorrowerP (
         $card_no,
@@ -726,7 +630,7 @@ class Rock
         $out_serial_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -743,41 +647,35 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 放款手续费签约查询
      * @param $card_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signPaymentQuery($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('card_no'));
+        
+        $params = compact('card_no');
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
      * 借款人还款金额签约查询
      * @param $card_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signRepaymentQuery($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('card_no'));
+        
+        $params = compact('card_no');
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -785,14 +683,11 @@ class Rock
      * @param string $card_no
      * @param string $origin_serial_no
      * @param null|string $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeRepayment($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -800,8 +695,8 @@ class Rock
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -809,14 +704,11 @@ class Rock
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokePayment($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -824,8 +716,8 @@ class Rock
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -835,14 +727,11 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signTransferP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -856,25 +745,22 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 转让手续费签约查询
      * @param $card_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signTransferCheck($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-        $this->request->setParams(compact('card_no'));
+        
+        $params = compact('card_no');
 
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -882,14 +768,11 @@ class Rock
      * @param $card_no
      * @param $origin_serial_no
      * @param $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeTransfer($card_no, $origin_serial_no, $out_serial_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -897,8 +780,8 @@ class Rock
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -911,10 +794,7 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signAgainP(
         $card_no,
@@ -926,7 +806,7 @@ class Rock
         $end_time,
         $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -943,8 +823,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -954,14 +834,11 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signFeeP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -975,8 +852,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     // ============================= 资产类接口 =================================//
@@ -996,10 +873,7 @@ class Rock
      * @param null $debtor_card_no
      * @param $trustee_pay_flag
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function assetsEnroll(
         $asset_no,
@@ -1017,7 +891,7 @@ class Rock
         $third_custom = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'asset_no' => $asset_no,
@@ -1035,8 +909,8 @@ class Rock
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1045,14 +919,11 @@ class Rock
      * @param $card_no
      * @param $amount
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function assetsRevoke($asset_no, $card_no, $amount, $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'asset_no' => $asset_no,
@@ -1061,8 +932,8 @@ class Rock
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1070,14 +941,11 @@ class Rock
      * @param $asset_no
      * @param $card_no
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function assetQuery($asset_no, $card_no, $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'asset_no' => $asset_no,
@@ -1085,8 +953,8 @@ class Rock
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1095,14 +963,11 @@ class Rock
      * @param $card_no
      * @param $warranty_card_no
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function assetChange($asset_no, $card_no, $warranty_card_no, $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'asset_no' => $asset_no,
@@ -1111,30 +976,27 @@ class Rock
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 再贷标的余额查询
      * @param $card_no
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function assetBalanceQuery($card_no, $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     // ============================= 交易类接口 =================================//
@@ -1155,10 +1017,7 @@ class Rock
      * @param null $interest_day
      * @param null $out_serial_no
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function bidApplyP(
         $card_no,
@@ -1176,7 +1035,7 @@ class Rock
         $out_serial_no = null,
         $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'card_no' => $card_no,
@@ -1199,8 +1058,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1218,10 +1077,7 @@ class Rock
      * @param $mobile
      * @param null $out_serial_no
      * @param null $third_custom
-     * @return bool|\Sureyee\RockFinTech\Response
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function buyCreditP(
         $card_no_in,
@@ -1239,7 +1095,7 @@ class Rock
         $third_custom = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no_in' => $card_no_in,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -1260,8 +1116,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1272,11 +1128,7 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signAutoBidP(
         $card_no,
@@ -1286,7 +1138,7 @@ class Rock
         $end_time,
         $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -1300,8 +1152,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1311,15 +1163,11 @@ class Rock
      * @param $amount
      * @param $asset_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeBid($card_no, $origin_serial_no, $amount, $asset_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -1328,8 +1176,8 @@ class Rock
             'asset_no' => $asset_no
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1337,43 +1185,35 @@ class Rock
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeAutoBid($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
             'origin_serial_no' => $origin_serial_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 投资人自动投标签约状态查询
      * @param $card_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signBidQuery($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1392,11 +1232,7 @@ class Rock
      * @param bool $frozen_flag
      * @param string $frozen_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function autoBidApply(
         $card_no,
@@ -1415,7 +1251,7 @@ class Rock
         $out_serial_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -1433,8 +1269,8 @@ class Rock
             'frozen_no' => $frozen_no
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1445,11 +1281,7 @@ class Rock
      * @param $end_time
      * @param string $third_custom
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function trusteePayP(
         $card_no, 
@@ -1460,7 +1292,7 @@ class Rock
         $out_serial_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
@@ -1474,52 +1306,44 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 受托支付查询
      * @param $card_no
      * @param $debt_card_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function trusteePayQuery($card_no, $debt_card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'debt_card_no' => $debt_card_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 受托支付撤销
      * @param $card_no
      * @param $debt_card_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeTrusteePay($card_no, $debt_card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'debt_card_no' => $debt_card_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1530,11 +1354,7 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signCreditTransferP(
         $card_no, 
@@ -1545,7 +1365,7 @@ class Rock
         $out_serial_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'amount' => $amount,
@@ -1559,8 +1379,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1571,11 +1391,7 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function authorizationP(
         $card_no,
@@ -1585,7 +1401,7 @@ class Rock
         $end_time,
         $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'amount' => $amount,
@@ -1599,8 +1415,8 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1609,15 +1425,11 @@ class Rock
      * @param $origin_serial_no
      * @param null $third_custom
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeCreditTransfer($card_no, $origin_serial_no, $third_custom = null, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'origin_serial_no' => $origin_serial_no,
@@ -1625,52 +1437,44 @@ class Rock
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 投资人自动债转签约状态查询
      * @param $card_no
      * @param null $third_custom
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signTransferQuery($card_no, $third_custom = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'third_custom' => $third_custom,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 标的投标详情
      * @param $card_no
      * @param $asset_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function debtQuery($card_no, $asset_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'asset_no' => $asset_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1680,15 +1484,11 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signWarrantP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'amount' => $amount,
@@ -1701,28 +1501,24 @@ class Rock
             'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 借款人还款担保人金额签约查询
      * @param $card_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function signWarrantQuery($card_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1730,23 +1526,19 @@ class Rock
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function revokeWarrant($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'origin_serial_no' => $origin_serial_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32()
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1758,15 +1550,11 @@ class Rock
      * @param int $warrant_fee
      * @param int $fee
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function debtorRepayWarrantor($card_no, $asset_no, $warrant_card_no, $warrant_amount = 0, $warrant_fee = 0, $fee = 0, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'asset_no' => $asset_no,
@@ -1777,28 +1565,24 @@ class Rock
             'out_serial_no' => $out_serial_no ?? uniqueId32()
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 借款人还款担保人查询
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function debtorRepayWarrantorQuery($out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'out_serial_no' => $out_serial_no ?? uniqueId32()
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     // ============================ 营销类接口 ====================================//
@@ -1811,11 +1595,7 @@ class Rock
      * @param null $card_no
      * @param int $currency
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function moneyDispatch(
         $card_no_in,
@@ -1825,7 +1605,7 @@ class Rock
         $currency = RockConfig::CNY,
         $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no ?? Config::get('rock_fin_tech.money_dispatch_account'),
             'card_no_in' => $card_no_in,
@@ -1836,8 +1616,8 @@ class Rock
             'out_serial_no' => $out_serial_no ?? uniqueId32()
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
@@ -1849,11 +1629,7 @@ class Rock
      * @param null $card_no
      * @param int $currency
      * @param null $description
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function moneyRevoke(
         $origin_timestamp,
@@ -1865,7 +1641,7 @@ class Rock
         $description = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'origin_timestamp' => $origin_timestamp,
             'origin_serial_no' => $origin_serial_no,
@@ -1877,28 +1653,24 @@ class Rock
             'description' => $description,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 红包发放查询
      * @param $serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function moneyDispatchQuery($serial_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'serial_no' => $serial_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     // =============================  查询类接口 =================================//
@@ -1906,189 +1678,153 @@ class Rock
     /**
      * 批次放款查询（新）
      * @param $batch_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchNewQueryPaymentB($batch_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'batch_no' => $batch_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 批次还款查询（新）
      * @param $batch_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchNewQueryRepaymentB($batch_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'batch_no' => $batch_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 批次债转查询（新）
      * @param $batch_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchNewQueryBuyCreditB($batch_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'batch_no' => $batch_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 批次发红包查询（新）
      * @param $batch_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchNewQueryCouponB($batch_no)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'batch_no' => $batch_no,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 投资人投标申请查询
      * @param $card_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function applyBidQuery($card_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_no' => $card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 投资人购买债权查询
      * @param $in_card_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function buyCreditQuery($in_card_no, $out_serial_no = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'in_card_no' => $in_card_no,
             'out_serial_no' => $out_serial_no ?? uniqueId32(),
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 资金交易状态查询
      * @param $order_id
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function moneyQuery($order_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'order_id' => $order_id,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 网关绑卡结果查询
      * @param $card_type
      * @param $order_id
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function bindBankCardQuery($card_type, $order_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'card_type' => $card_type,
             'order_id' => $order_id,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     /**
      * 银行充值限额查询
      * @param null $bank_name
      * @param null $bank_code
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function bankQuota($bank_name = null, $bank_code = null)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
         $params = [
             'bank_name' => $bank_name,
             'bankleitzahl' => $bank_code,
         ];
 
-        $this->request->setParams($params);
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
+
     }
 
     // =============================  批量处理接口 =================================//
@@ -2099,11 +1835,7 @@ class Rock
      * @param string $batch_type
      * @param null $batch_no
      * @param null $batch_date
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchPaymentB(
         array $items,
@@ -2112,7 +1844,7 @@ class Rock
         $batch_date = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2123,9 +1855,9 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
@@ -2134,8 +1866,7 @@ class Rock
      * @param string $batch_type 业务类别 ,必填， 001-放款 002-到期还款 003-平台逾期代偿/担保公司代偿,(3)位数
      * @param null $batch_no
      * @param null $batch_date
-     * @return false|\Sureyee\RockFinTech\Response
-     * @throws
+     * @return Rock
      */
     public function batchRepaymentB(
         array $items,
@@ -2144,7 +1875,7 @@ class Rock
         $batch_date = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2155,29 +1886,23 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 批次投资人购买债权
      * @param array $items
-     * @param string $batch_type
      * @param null $batch_no
-     * @param null $batch_date
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchBuyCreditB(
         array $items,
         $batch_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2186,9 +1911,9 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
@@ -2196,11 +1921,7 @@ class Rock
      * @param array $items
      * @param null $batch_no
      * @param null $batch_date
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchRevokeBuyCreditB(
         array $items,
@@ -2208,7 +1929,7 @@ class Rock
         $batch_date = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2218,9 +1939,9 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
 
@@ -2230,11 +1951,7 @@ class Rock
      * @param string $batch_type
      * @param null $batch_no
      * @param null $batch_date
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchRevokePaymentB(
         array $items,
@@ -2243,7 +1960,7 @@ class Rock
         $batch_date = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2254,9 +1971,9 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
@@ -2265,11 +1982,7 @@ class Rock
      * @param null $batch_date
      * @param null $batch_no
      * @param string $batch_type
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchRevokeRepaymentB(
         array $items,
@@ -2277,7 +1990,7 @@ class Rock
         $batch_no = null,
         $batch_type = RockConfig::BATCH_TYPE_REPAY)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2288,9 +2001,9 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
@@ -2299,11 +2012,7 @@ class Rock
      * @param null $batch_date
      * @param null $batch_no
      * @param string $batch_type
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchEndCreditB(
         array $items,
@@ -2312,7 +2021,7 @@ class Rock
         $batch_type = RockConfig::BATCH_TYPE_REPAY
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2322,27 +2031,23 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 存管账户批量红包发放
      * @param array $items
      * @param null $batch_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchCouponB(
         array $items,
         $batch_no = null
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
@@ -2351,60 +2056,48 @@ class Rock
             'items' => $items
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 批处理回调重发接口
      * @param $req_sequence_id
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchNotifyResendB($req_sequence_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
+        
 
         $params = [
             'req_sequence_id' => $req_sequence_id,
         ];
 
-        $this->request->setParams($params);
+        return $this->buildRequest(__FUNCTION__, $params);
 
-        return $this->send();
+
     }
 
     /**
      * 页面接口回调重发接口
      * @param $req_sequence_id
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function batchPageNotifyB($req_sequence_id)
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-
         $params = [
             'req_sequence_id' => $req_sequence_id,
         ];
 
-        $this->request->setParams($params);
-
-        return $this->send();
+        return $this->buildRequest(__FUNCTION__, $params);
     }
 
     // ============================== 企业类接口 ==================================//
 
 
     /**
-     * 线下账户信息入库
+     *
      * @param $cert_no
      * @param $name
      * @param $mobile
@@ -2414,11 +2107,7 @@ class Rock
      * @param $serial_no
      * @param $account_type
      * @param int $role_type
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
+     * @return Rock
      */
     public function enterpriseAdd(
         $cert_no,
@@ -2432,8 +2121,6 @@ class Rock
         $role_type = RockConfig::ROLE_TYPE_LENDER
     )
     {
-        $this->request = new Request(snake_case(__FUNCTION__));
-
         $params = [
             'cert_no' => $cert_no,
             'name' => $name,
@@ -2446,9 +2133,24 @@ class Rock
             'role_type' => $role_type,
         ];
 
+        return $this->buildRequest(__FUNCTION__, $params);
+    }
+
+    // ============================================ 方法 ===========================================================//
+
+    /**
+     * 创建request对象
+     * @param string $service
+     * @param array $params
+     * @return Rock
+     */
+    public function buildRequest(string $service, array $params):Rock
+    {
+        $this->request = new Request(snake_case($service));
+
         $this->request->setParams($params);
 
-        return $this->send();
+        return $this;
     }
 
     /**
@@ -2456,9 +2158,9 @@ class Rock
      * @param string $custom
      * @return Rock
      */
-    public function custom(string $custom):Rock
+    public function custom($custom):Rock
     {
-        $this->custom = $custom;
+        $this->request->custom = is_string($custom) ? $custom : json_encode($custom);
         return $this;
     }
 
@@ -2474,11 +2176,9 @@ class Rock
     {
         if ($this->isRunning()) {
             $this->request->custom = $this->custom;
-            Log::debug('钜石接口请求数据：' .  $this->request->toJson());
             event(new RockBeforeRequest($this->request));
             /** @var Response $response */
             $response =  $this->client->request($this->request);
-            Log::debug('钜石接口同步回调结果：', $response->toArray());
             event(new RockAfterRequest($this->request, $response));
             return $response;
         }
