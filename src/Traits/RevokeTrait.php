@@ -84,7 +84,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::unfrozen($request->card_no, $request->amount, $this->getSerialNo());
+        return Rock::unfrozen($request->card_no, $request->amount, $this->getSerialNo())->send();
     }
 
     /**
@@ -94,7 +94,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeRepayment($request->card_no, $this->getSerialNo());
+        return Rock::revokeRepayment($request->card_no, $this->getSerialNo())->send();
     }
 
     /**
@@ -105,7 +105,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokePayment($request->card_no, $this->getSerialNo());
+        return Rock::revokePayment($request->card_no, $this->getSerialNo())->send();
     }
 
     /**
@@ -116,7 +116,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeTransfer($request->card_no, $this->getSerialNo());
+        return Rock::revokeTransfer($request->card_no, $this->getSerialNo())->send();
     }
 
     /**
@@ -127,7 +127,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::assetsRevoke($request->asset_no, $request->card_no, $request->amount, $this->getThirdCustom());
+        return Rock::assetsRevoke($request->asset_no, $request->card_no, $request->amount, $this->getThirdCustom())->send();
     }
 
     /**
@@ -138,7 +138,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeBid($request->card_no, $this->getSerialNo(), $request->amount, $request->asset_no);
+        return Rock::revokeBid($request->card_no, $this->getSerialNo(), $request->amount, $request->asset_no)->send();
     }
 
     /**
@@ -149,7 +149,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeAutoBid($request->card_no, $this->getSerialNo());
+        return Rock::revokeAutoBid($request->card_no, $this->getSerialNo())->send();
     }
 
     /**
@@ -160,7 +160,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeTrusteePay($request->card_no, $request->debt_card_no);
+        return Rock::revokeTrusteePay($request->card_no, $request->debt_card_no)->send();
     }
 
     /**
@@ -171,7 +171,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeCreditTransfer($request->card_no, $this->getSerialNo(), $this->getThirdCustom());
+        return Rock::revokeCreditTransfer($request->card_no, $this->getSerialNo(), $this->getThirdCustom())->send();
     }
 
     /**
@@ -182,7 +182,7 @@ trait RevokeTrait
     {
         $request = $this->getRequestData();
 
-        return Rock::revokeWarrant($request->card_no, $this->getSerialNo());
+        return Rock::revokeWarrant($request->card_no, $this->getSerialNo())->send();
     }
 
     /**
@@ -201,6 +201,6 @@ trait RevokeTrait
             $request->card_no,
             $request->currency,
             $description = $this->getDescription()
-        );
+        )->send();
     }
 }
