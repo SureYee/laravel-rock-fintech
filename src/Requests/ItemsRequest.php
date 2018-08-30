@@ -20,7 +20,7 @@ class ItemsRequest
 
     public function __construct($items, TransformerInterface $transformer)
     {
-        $this->items = $items instanceof Collection ? $items->toArray() : $items;
+        $this->items = $items instanceof Collection ? $items : (new Collection($items));
         $this->transformer = $transformer;
     }
 
@@ -28,9 +28,9 @@ class ItemsRequest
     {
         $transformer = $this->transformer;
 
-        return array_map(function ($item) use ($transformer) {
+        return $this->items->map(function ($item) use ($transformer) {
             return $transformer->format($item);
-        }, $this->items);
+        })->toArray();
     }
 
     public function count()
