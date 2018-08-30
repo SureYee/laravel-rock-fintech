@@ -2,27 +2,14 @@
 
 #### 项目介绍
 
-rock-fintech的laravel封装，加入事件，控制台等机制。
-
+rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master为开发包，请谨慎使用**
 
 
 #### 安装说明
 
-1. 在`config/app.php`中添加服务
-
-    ```php
-   'providers' => [
-       ...
-       \Sureyee\LaravelRockFinTech\RockServiceProvider::class,
-   ]
-    ```
-
-    ```php
-    'aliases' => [
-       ...
-       'Rock' => Sureyee\LaravelRockFinTech\Facades\Rock::class,
-    ]
-    ```
+1. 安装接口包
+    
+    `composer require sureyee/laravel-rock-fentech`
     
 2. 运行 `php artisan vendor:publish` 发布配置项文件
 
@@ -119,7 +106,7 @@ rock-fintech的laravel封装，加入事件，控制台等机制。
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
-5. Feature
+#### Feature
     
     1. 添加默认的request_log和response_log数据表，提供默认的revoke方法
     

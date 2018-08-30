@@ -11,7 +11,6 @@ namespace Sureyee\LaravelRockFinTech;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 use Sureyee\LaravelRockFinTech\Events\RockAfterRequest;
 use Sureyee\LaravelRockFinTech\Events\RockBeforeRequest;
 use Sureyee\LaravelRockFinTech\Exceptions\SystemDownException;
