@@ -25,7 +25,7 @@
                 "Sureyee\\LaravelRockFinTech\\RockServiceProvider"
             ],
             "aliases": {
-                "Rock": "Sureyee\\LaravelRockFinTech\\Fcade\\Rock"
+                "Rock": "Sureyee\\LaravelRockFinTech\\Facades\\Rock"
             }
         }
     }
