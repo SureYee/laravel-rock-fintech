@@ -29,7 +29,9 @@ return [
         'default' => ''
     ],
 
-    'money_dispatch_account' => '', // 红包发放账户
+    'assure_account' =>  env('RFT_ASSURE_ACCOUNT'), // 担保账户
+
+    'money_dispatch_account' =>  env('RFT_MONEY_DISPATCH_ACCOUNT'), // 红包发放账户
 
 
 

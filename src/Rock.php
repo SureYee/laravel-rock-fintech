@@ -2212,11 +2212,10 @@ class Rock
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
-    protected function send()
+    public function send()
     {
+        event(new RockBeforeRequest($this->request));
         if ($this->isRunning()) {
-            $this->request->custom = $this->custom;
-            event(new RockBeforeRequest($this->request));
             /** @var Response $response */
             $response =  $this->client->request($this->request);
             event(new RockAfterRequest($this->request, $response));
