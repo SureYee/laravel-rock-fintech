@@ -21,7 +21,7 @@ class CreateRftBalanceLogsTable extends Migration
             $table->string('transaction_card_no')->nullable()->comment('对手交易账号');
             $table->string('transaction_symbol')->comment('交易金额符号');
             $table->float('transaction_money')->comment('交易金额');
-            $table->float('transaction_account')->comment('交易后余额');
+            $table->float('transaction_account', 12, 2)->comment('交易后余额');
             $table->string('sequence_id');
             $table->timestamps();
         });

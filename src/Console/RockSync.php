@@ -83,7 +83,7 @@ class RockSync extends Command
             'transaction_symbol' => $data[10],
             'transaction_money' => $data[11],
             'transaction_account' => $data[12],
-            'sequence_id' => substr(array_pop($comment), 0, 32)
+            'sequence_id' => array_pop($comment)
         ];
 
     }
