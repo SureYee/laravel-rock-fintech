@@ -69,13 +69,13 @@ class RockSync extends Command
     protected function parseContent($content)
     {
         $data = explode('|', $content);
-
+        $comment = explode('&', $data[13]);
         return [
             'log_no' => $data[0],
             'origin_id' => $data[1],
             'transaction_type' => $data[2],
             'transaction_date' => Carbon::createFromFormat('YmdHis', $data[3].$data[4]),
-            'recorded_date' => $data[5],
+            'recorded_date' => Carbon::createFromFormat('Ymd', $data[5]),
             'serial_no' => $data[6],
             'flag' => $data[7],
             'card_no' => $data[8],
@@ -83,7 +83,7 @@ class RockSync extends Command
             'transaction_symbol' => $data[10],
             'transaction_money' => $data[11],
             'transaction_account' => $data[12],
-            'sequence_id' => substr(array_pop(explode('&', $data[13])), 0, 32)
+            'sequence_id' => substr(array_pop($comment), 0, 32)
         ];
 
     }

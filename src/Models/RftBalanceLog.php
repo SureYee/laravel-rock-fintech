@@ -13,5 +13,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class RftBalanceLog extends Model
 {
-    
+    protected $dates = [
+        'transaction_date',
+        'recorded_date',
+    ];
+
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 }
