@@ -33,6 +33,14 @@ return [
 
     'money_dispatch_account' =>  env('RFT_MONEY_DISPATCH_ACCOUNT'), // 红包发放账户
 
+    'sftp' => [
+        'host' => env('RFT_SFTP_HOST'),
+        'port' => env('RFT_SFTP_PORT'),
+        'username' => env('RFT_SFTP_USERNAME'),
+        'password' => env('RFT_SFTP_PASSWORD'),
+        'timeout' => 10,
+    ],
 
+    'sftp_origin' => env('RFT_SFTP_ORIGIN'),
 
 ];
