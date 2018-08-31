@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Cache;
 
 class RockDown extends Command
 {
-    protected $signature = 'rock:down {--start=now} {--h=0}';
+    protected $signature = 'rock:down {start=now} {--h=0}';
 
     protected $description = '钜石科技接口维护';
 
     public function handle()
     {
-        $start = $this->option('start');
+        $start = $this->argument('start');
         $hours = (float) $this->option('h');
 
         $start = strtotime($start);
@@ -32,6 +32,7 @@ class RockDown extends Command
 
         if (!is_numeric($hours)) {
             $this->error('请输入正确的系统暂停时长数值！');
+            return 1;
         }
 
         $end = $hours === 0.0 ? null : $hours * 3600 + $start;
@@ -39,6 +40,7 @@ class RockDown extends Command
         $this->systemDown($start, $end);
 
         $this->info('钜石科技接口系统进入维护！维护时间(' . date('Y-m-d H:i:s', $start) .($end ? ' - ' . date('Y-m-d H:i:s', $end) : '') . ')');
+        return 0;
     }
 
     protected function systemDown($start = null, $end = null)
