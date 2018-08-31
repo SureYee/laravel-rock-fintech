@@ -80,8 +80,7 @@ class RockSync extends Command
             'flag' => $data[7],
             'card_no' => $data[8],
             'transaction_card_no' => $data[9],
-            'transaction_symbol' => $data[10],
-            'transaction_money' => $data[11],
+            'transaction_money' => $data[10] === 'C' ? - $data[11] : $data[11],
             'transaction_account' => $data[12],
             'sequence_id' => array_pop($comment)
         ];
