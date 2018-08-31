@@ -22,4 +22,9 @@ class CreateRftRequestLogsTable extends Migration
             $table->timestamps();
         });
     }
+
+    public function down()
+    {
+        Schema::dropIfExists('rft_request_logs');
+    }
 }

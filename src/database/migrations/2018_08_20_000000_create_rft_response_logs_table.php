@@ -24,4 +24,9 @@ class CreateRftResponseLogsTable extends Migration
             $table->timestamps();
         });
     }
+
+    public function down()
+    {
+        Schema::dropIfExists('rft_response_logs');
+    }
 }
