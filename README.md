@@ -19,7 +19,8 @@ rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master�
 
 1. 调用接口：
 
-    ```php
+    1. 非批次调用
+        ```php
        // 注册账户
        $mobile = '18666666666';
        $response = Rock::createAccountP($mobile)->send();
@@ -29,8 +30,75 @@ rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master�
        }  else {
            // notify wrong things
        }
-    ```
+        ```
+        
+    2. 批次调用
     
+        批次调用首先要创建一个`Transformer`类，实现`TransformerInterface`接口。
+        
+       ```php
+        namespace App\Transformers;
+        
+        use Sureyee\LaravelRockFinTech\Contracts\TransformerInterface;
+        use Sureyee\RockFinTech\RockConfig;
+        
+        class RepayTransformer implements TransformerInterface
+        {
+        
+            public function __construct()
+            {
+
+            }
+        
+            public function format($incomeRecord): array
+            {
+                return [
+                    'out_card_no' => $incomeRecord->out_card_no,
+                    'amount' => $incomeRecord->amount,
+                    'interest_amount' => $incomeRecord->interest_amount,
+                    'in_card_no' => $incomeRecord->in_card_no,
+                    'currency' => RockConfig::CNY,
+                    'out_fee_mode' => 0,
+                    'out_fee_amount' => 0,
+                    'in_fee_mode' => 0,
+                    'in_fee_amount' => 0,
+                    'assets_no' => $incomeRecord->asset_no,
+                    'auth_code' => $incomeRecord->auth_code,
+                    'serial_no' => $incomeRecord->serial_no,
+                    'third_reserved' => '',
+                    'penalty_interest_amount' => 0,
+                    'reserved' => $this->reserved($incomeRecord),
+                ];
+            }
+
+            /**
+             * 自定义参数
+             * @param IncomeRecord $incomeRecord
+             * @return string
+             */
+            protected function reserved(IncomeRecord $incomeRecord)
+            {
+                return json_encode([
+                    'income_record' => $incomeRecord->id
+                ]);
+            }
+        }  
+       ```
+       
+       接口调用
+       
+       ```php
+        $itemsRequest = new ItemsRequest($collect, new RepayTransformer);
+        
+        $response = Rock::batchRepaymentB($itemsRequest)->send();
+        ```     
+    
+    3. 添加`custom`参数
+    
+        `Rock::createAccountP()->custom(['one' => 1])->send()`
+        
+        `custom` 方法接收一个`string`或者`array`用作自定义参数。数组会在放入`Request`前转换为`json`字符串.
+       
 2. 处理异步回调
 
     异步回调均通过事件解耦，可以在config文件中自定义回调触发事件，然后通过事件订阅者进行执行。
@@ -92,9 +160,9 @@ rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master�
     
     捕捉错误后可以通过`Rock::getSystemMaintenanceTime()` 方法获取系统维护的开始时间和结束时间。
     
-    命令提供`--start`参数指定系统维护开始时间，如：`php artisan rock:down --start=tomorrow` 则明天开始进行维护
+    命令提供`start`参数指定系统维护开始时间，如：`php artisan rock:down tomorrow` 则明天开始进行维护
     
-    命令提供`--h` 参数指定系统维护时长，单位是小时，如：`php artisan rock:down --h=2` 现在开始进入维护，维护时间2小时，2小时后自动开启服务。
+    命令提供`--h` 选项指定系统维护时长，单位是小时，如：`php artisan rock:down --h=2` 现在开始进入维护，维护时间2小时，2小时后自动开启服务。
     
     `php artisan rock:up` 手动启动系统服务
 
@@ -106,9 +174,3 @@ rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master�
      
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
-#### Feature
-    
-    1. 添加默认的request_log和response_log数据表，提供默认的revoke方法
-    
-    2. 添加钜石系统流水数据表，对于每天流水的sftp文件读取和数据表写入
-
