@@ -66,7 +66,7 @@ class Rock
      * @param null $out_serial_no
      * @return Rock
      */
-    public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_BORROWER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
+    public function createAccountP($mobile, $role_type = RockConfig::ROLE_TYPE_LENDER, $account_type = RockConfig::ACCOUNT_TYPE_COMMON,  $out_serial_no = null)
     {
         $params = [
             'mobile' => $mobile,
