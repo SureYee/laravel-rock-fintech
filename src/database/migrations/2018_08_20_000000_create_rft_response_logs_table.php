@@ -18,7 +18,6 @@ class CreateRftResponseLogsTable extends Migration
             $table->string('version');
             $table->string('sequence_id');
             $table->string('custom');
-            $table->string('client');
             $table->dateTime('response_time');
             $table->text('response_data');
             $table->timestamps();
