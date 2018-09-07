@@ -38,4 +38,9 @@ class RftRequestLog extends Model
             'request_data' => $request->toJson(),
         ]);
     }
+
+    public function getSerialNoFromRequest($request)
+    {
+        return $request->out_serial_no ?: ($request->order_no ?: null);
+    }
 }
