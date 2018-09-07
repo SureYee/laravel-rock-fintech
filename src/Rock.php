@@ -72,8 +72,8 @@ class Rock
             'mobile' => $mobile,
             'account_type' => $account_type,
             'role_type' => $role_type,
-            'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
-            'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'success_url' => $this->successUrl(__FUNCTION__),
             'callback_url' => $this->callback,
             'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
@@ -93,8 +93,8 @@ class Rock
         $params = [
             'customer_no' => $customer_no,
             'card_no' => $card_no,
-            'fail_url' => Config::get('rock_fin_tech.fail_url.create_account_p'),
-            'success_url' => Config::get('rock_fin_tech.success_url.create_account_p'),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'success_url' => $this->successUrl(__FUNCTION__),
             'callback_url' => $this->callback,
             'out_serial_no' => is_null($out_serial_no) ? uniqueId32() : $out_serial_no,
         ];
@@ -679,28 +679,13 @@ class Rock
     }
 
     /**
-     * 撤销借款人还款金额签约
-<<<<<<< HEAD
-     * @param string $card_no
-     * @param string $origin_serial_no
-     * @param null|string $out_serial_no
-     * @return Rock
-=======
-     *
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
->>>>>>> dev
+     * @return Rock
      */
     public function revokeRepayment($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        
-
         $params = [
             'card_no' => $card_no,
             'origin_serial_no' => $origin_serial_no,
@@ -713,23 +698,14 @@ class Rock
 
     /**
      * 撤销放款手续费签约
+     *
      * @param $card_no
      * @param $origin_serial_no
      * @param null $out_serial_no
-<<<<<<< HEAD
      * @return Rock
-=======
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
->>>>>>> dev
      */
     public function revokePayment($card_no, $origin_serial_no, $out_serial_no = null)
     {
-        
-
         $params = [
             'card_no' => $card_no,
             'origin_serial_no' => $origin_serial_no,
@@ -747,15 +723,7 @@ class Rock
      * @param $start_time
      * @param $end_time
      * @param null $out_serial_no
-<<<<<<< HEAD
      * @return Rock
-=======
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
->>>>>>> dev
      */
     public function signTransferP($card_no, $amount, $start_time, $end_time, $out_serial_no = null)
     {
@@ -780,16 +748,9 @@ class Rock
 
     /**
      * 转让手续费签约查询
+     *
      * @param $card_no
-<<<<<<< HEAD
      * @return Rock
-=======
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
->>>>>>> dev
      */
     public function signTransferCheck($card_no)
     {
@@ -955,15 +916,7 @@ class Rock
      * @param $card_no
      * @param $amount
      * @param null $third_custom
-<<<<<<< HEAD
      * @return Rock
-=======
-     * @return Response
-     * @throws ResponseException
-     * @throws SystemDownException
-     * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
-     * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
->>>>>>> dev
      */
     public function assetsRevoke($asset_no, $card_no, $amount, $third_custom = null)
     {
