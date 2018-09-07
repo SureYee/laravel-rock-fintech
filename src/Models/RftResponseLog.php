@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Sureyee\LaravelRockFinTech\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
