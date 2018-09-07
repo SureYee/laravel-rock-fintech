@@ -15,6 +15,7 @@ use Sureyee\LaravelRockFinTech\Events\RockAfterRequest;
 use Sureyee\LaravelRockFinTech\Events\RockBeforeRequest;
 use Sureyee\LaravelRockFinTech\Exceptions\SystemDownException;
 use Sureyee\LaravelRockFinTech\Requests\ItemsRequest;
+use Sureyee\LaravelRockFinTech\Responses\SyncResponse;
 use Sureyee\RockFinTech\Client;
 use Sureyee\RockFinTech\Exceptions\ResponseException;
 use Sureyee\RockFinTech\Request;
@@ -2170,7 +2171,7 @@ class Rock
         event(new RockBeforeRequest($this->request));
         if ($this->isRunning()) {
             /** @var Response $response */
-            $response =  $this->client->request($this->request);
+            $response =  new SyncResponse($this->client->request($this->request)->toArray());
             event(new RockAfterRequest($this->request, $response));
             return $response;
         }

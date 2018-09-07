@@ -18,6 +18,7 @@ use Sureyee\LaravelRockFinTech\Events\RockCallback;
 use Sureyee\LaravelRockFinTech\Exceptions\ConfigSettingErrorException;
 use Sureyee\LaravelRockFinTech\Exceptions\EventFailedException;
 use Sureyee\LaravelRockFinTech\Facades\Rock;
+use Sureyee\LaravelRockFinTech\Responses\AsyncResponse;
 use Sureyee\RockFinTech\Response;
 
 
@@ -59,11 +60,11 @@ class CallbackController extends Controller
         $event = config('rock_fin_tech.callback.' . $service);
 
         if (is_null($event)) {
-            return new RockCallback(new Response($request->all()));
+            return new RockCallback(new AsyncResponse($request->all()));
         }
 
         if (class_exists($event)) {
-            return new $event(new Response($request->all()));
+            return new $event(new AsyncResponse($request->all()));
         }
         throw new ConfigSettingErrorException('rock_fin_tech.callback.' . $service . '配置错误！');
     }
