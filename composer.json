@@ -29,5 +29,8 @@
                 "Rock": "Sureyee\\LaravelRockFinTech\\Facades\\Rock"
             }
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
