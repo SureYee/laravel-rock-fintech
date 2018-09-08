@@ -28,6 +28,11 @@ class RftResponseLog extends Model
         return $this->belongsTo(RftRequestLog::class, 'uuid', 'uuid');
     }
 
+    public function getResponse()
+    {
+        return $this->response ?? $this->response = new Response($this->response_data);
+    }
+
     /**
      *
      * @param Response|AsyncResponse|SyncResponse $response
