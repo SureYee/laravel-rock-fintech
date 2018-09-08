@@ -12,19 +12,25 @@ class RftResponseLog extends Model
 {
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'response_data' => 'array',
+        'custom' => 'array',
+    ];
+
+    protected $dates = [
+        'response_time',
+    ];
+
+    protected $response = null;
+
     public function request()
     {
         return $this->belongsTo(RftRequestLog::class, 'uuid', 'uuid');
     }
 
-    public function getResponseDataAttribute($value)
-    {
-        return json_decode($value, true);
-    }
-
     /**
      *
-     * @param AsyncResponse $response
+     * @param Response|AsyncResponse|SyncResponse $response
      * @return RftRequestLog
      */
     public function createFromResponse(Response $response)
@@ -38,7 +44,7 @@ class RftResponseLog extends Model
             'version' => $response->version,
             'response_time' => Carbon::createFromTimestamp($response->timestamp),
             'custom' => $response->custom,
-            'response_data' => json_encode($response->toArray()),
+            'response_data' => $response->toArray(),
             'sequence_id' => $response->sequence_id
         ]);
     }
