@@ -22,6 +22,16 @@ class RftResponseLog extends Model
 
     protected $response = null;
 
+    public function scopeAsync($query)
+    {
+        return $query->where('type', 'async');
+    }
+
+    public function scopeSync($query)
+    {
+        return $query->where('type', 'sync');
+    }
+    
     public function request()
     {
         return $this->belongsTo(RftRequestLog::class, 'uuid', 'uuid');

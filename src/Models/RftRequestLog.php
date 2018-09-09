@@ -19,6 +19,27 @@ class RftRequestLog extends Model
         return $this->hasMany(RftResponseLog::class, 'uuid', 'uuid');
     }
 
+    public function syncResponses()
+    {
+        return $this->responses()->sync();
+    }
+
+    public function asyncResponses()
+    {
+        return $this->responses()->async();
+    }
+
+    public function hadAsyncResponses()
+    {
+        return $this->asyncResponses->isNotEmpty();
+    }
+
+    public function hadSyncResponses()
+    {
+        return $this->syncResponses->isNotEmpty();
+    }
+
+
     public function getRequestDataAttribute($value)
     {
         return json_decode($value, true);
