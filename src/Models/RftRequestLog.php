@@ -10,11 +10,6 @@ class RftRequestLog extends Model
 {
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'request_data' => 'array',
-        'custom' => 'array',
-    ];
-
     protected $dates = [
         'request_time'
     ];
@@ -22,6 +17,17 @@ class RftRequestLog extends Model
     public function responses()
     {
         return $this->hasMany(RftResponseLog::class, 'uuid', 'uuid');
+    }
+
+    public function getRequestDataAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function getCustomAttribute($value)
+    {
+        $array = json_decode($value, true);
+        return $array ?: $value;
     }
 
     public function createFromRequest(Request $request)

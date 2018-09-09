@@ -14,7 +14,6 @@ class RftResponseLog extends Model
 
     protected $casts = [
         'response_data' => 'array',
-        'custom' => 'array',
     ];
 
     protected $dates = [
@@ -31,6 +30,12 @@ class RftResponseLog extends Model
     public function getResponse()
     {
         return $this->response ?? $this->response = new Response($this->response_data);
+    }
+
+    public function getCustomAttribute($value)
+    {
+        $array = json_decode($value, true);
+        return $array ?: $value;
     }
 
     /**
