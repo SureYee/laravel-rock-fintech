@@ -21,6 +21,7 @@ class CreateRftResponseLogsTable extends Migration
             $table->dateTime('response_time');
             $table->text('response_data');
             $table->timestamps();
+            $table->unique(['type', 'uuid']);
         });
     }
 
