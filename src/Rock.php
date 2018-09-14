@@ -1972,14 +1972,14 @@ class Rock
 
     /**
      * 批次还款撤销
-     * @param array $items
+     * @param ItemsRequest $itemsRequest
      * @param null $batch_date
      * @param null $batch_no
      * @param string $batch_type
      * @return Rock
      */
     public function batchRevokeRepaymentB(
-        array $items,
+        ItemsRequest $itemsRequest,
         $batch_date = null,
         $batch_no = null,
         $batch_type = RockConfig::BATCH_TYPE_REPAY)
@@ -1989,10 +1989,10 @@ class Rock
         $params = [
             'batch_no' => $batch_no ?? uniqid(),
             'batch_type' => $batch_type,
-            'batch_count' => count($items),
+            'batch_count' => $itemsRequest->count(),
             'batch_date' => $batch_date ?? date('Ymd'),
             'notify_url' => $this->callback,
-            'items' => $items
+            'items' => $itemsRequest->transformer(),
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
