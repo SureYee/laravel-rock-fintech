@@ -4,10 +4,13 @@ namespace Sureyee\LaravelRockFinTech\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Sureyee\LaravelRockFinTech\Traits\RevokeTrait;
 use Sureyee\RockFinTech\Request;
 
 class RftRequestLog extends Model
 {
+    use RevokeTrait;
+
     protected $guarded = ['id'];
 
     protected $dates = [
