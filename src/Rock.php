@@ -982,15 +982,16 @@ class Rock
      * 再贷标的余额查询
      * @param $card_no
      * @param null $third_custom
+     * @param string $transaction
      * @return Rock
      */
-    public function assetBalanceQuery($card_no, $third_custom = null)
+    public function assetBalanceQuery($card_no, $transaction = null, $third_custom = null)
     {
-        
 
         $params = [
             'card_no' => $card_no,
             'third_custom' => $third_custom,
+            'transaction' => $transaction
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
