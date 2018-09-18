@@ -941,7 +941,7 @@ class Rock
      * @param null $third_custom
      * @return Rock
      */
-    public function assetQuery($asset_no, $card_no, $third_custom = null)
+    public function assetQuery($card_no, $asset_no = null, $third_custom = null)
     {
         
 
