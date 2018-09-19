@@ -3,6 +3,7 @@
 namespace Sureyee\LaravelRockFinTech\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Sureyee\LaravelRockFinTech\Responses\AsyncResponse;
 use Sureyee\LaravelRockFinTech\Responses\SyncResponse;
@@ -67,5 +68,46 @@ class RftResponseLog extends Model
             'response_data' => $response->toArray(),
             'sequence_id' => $response->sequence_id
         ]);
+    }
+
+    /**
+     * 查找唯一的response
+     * @param $uuid
+     * @param array $columns
+     * @return RftRequestLog
+     */
+    public static function findSyncByUuid($uuid, $columns = ['*'])
+    {
+        return (new static())
+            ->where('uuid', $uuid)
+            ->where('type', 'sync')
+            ->first($columns);
+    }
+
+    /**
+     * 查找唯一的response
+     * @param $uuid
+     * @param array $columns
+     * @return RftRequestLog
+     */
+    public static function findAsyncByUuid($uuid, $columns = ['*'])
+    {
+        return (new static())
+            ->where('uuid', $uuid)
+            ->where('type', 'async')
+            ->first($columns);
+    }
+
+    /**
+     * 查找唯一的response
+     * @param $uuid
+     * @param array $columns
+     * @return Collection
+     */
+    public static function findUuid($uuid, $columns = ['*'])
+    {
+        return (new static())
+            ->where('uuid', $uuid)
+            ->get($columns);
     }
 }

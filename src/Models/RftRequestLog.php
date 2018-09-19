@@ -73,4 +73,16 @@ class RftRequestLog extends Model
     {
         return $request->out_serial_no ?: ($request->order_no ?: null);
     }
+
+    /**
+     * 查找唯一的request
+     *
+     * @param $uuid
+     * @param array $columns
+     * @return RftRequestLog
+     */
+    public static function findUuid($uuid, $columns = ['*'])
+    {
+        return (new static())->where('uuid', $uuid)->first($columns);
+    }
 }
