@@ -28,7 +28,7 @@ class ItemsRequest
     {
         $transformer = $this->transformer;
 
-        return $this->items->map(function ($item) use ($transformer) {
+        return $this->items->values()->map(function ($item) use ($transformer) {
             return $transformer->format($item);
         })->toArray();
     }
