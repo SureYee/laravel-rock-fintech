@@ -1814,12 +1814,13 @@ class Rock
      * @param null $bank_code
      * @return Rock
      */
-    public function bankQuota($bank_name = null, $bank_code = null)
+    public function bankQuota($transaction, $bank_name = null, $bank_code = null)
     {
         
         $params = [
             'bank_name' => $bank_name,
             'bankleitzahl' => $bank_code,
+            'transaction' => $transaction,
         ];
 
         return $this->buildRequest(__FUNCTION__, $params);
