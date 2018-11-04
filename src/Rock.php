@@ -1026,19 +1026,19 @@ class Rock
         $interest_type,
         $end_date,
         $interest_rate,
+        $out_serial_no,
         $use_bonus = false,
         $bonus_amount = "0.00",
         $transact_date = null,
         $frozen_flag = true,
         $interest_day = null,
-        $out_serial_no = null,
         $third_custom = null)
     {
         
 
         $params = [
             'card_no' => $card_no,
-            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'out_serial_no' => $out_serial_no,
             'amount' => $amount,
             'asset_no' => $asset_no,
             'interest_date' => $interest_date,
