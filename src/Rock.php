@@ -2238,4 +2238,14 @@ class Rock
         $url = Config::get('rock_fin_tech.forget_pwd_url.' . snake_case($service));
         return $url ?? Config::get('rock_fin_tech.success_url.default');
     }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+    }
 }
