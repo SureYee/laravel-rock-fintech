@@ -24,12 +24,12 @@ class RftRequestLog extends Model
 
     public function syncResponses()
     {
-        return $this->responses()->sync();
+        return $this->hasOne(RftResponseLog::class, 'uuid', 'uuid')->sync();
     }
 
     public function asyncResponses()
     {
-        return $this->responses()->async();
+        return $this->hasOne(RftResponseLog::class, 'uuid', 'uuid')->async();
     }
 
     public function hadAsyncResponses()
