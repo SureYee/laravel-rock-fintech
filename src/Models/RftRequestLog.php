@@ -22,26 +22,15 @@ class RftRequestLog extends Model
         return $this->hasMany(RftResponseLog::class, 'uuid', 'uuid');
     }
 
-    public function syncResponses()
+    public function syncResponse()
     {
         return $this->hasOne(RftResponseLog::class, 'uuid', 'uuid')->sync();
     }
 
-    public function asyncResponses()
+    public function asyncResponse()
     {
         return $this->hasOne(RftResponseLog::class, 'uuid', 'uuid')->async();
     }
-
-    public function hadAsyncResponses()
-    {
-        return $this->asyncResponses->isNotEmpty();
-    }
-
-    public function hadSyncResponses()
-    {
-        return $this->syncResponses->isNotEmpty();
-    }
-
 
     public function getRequestDataAttribute($value)
     {
