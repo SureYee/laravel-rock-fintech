@@ -13,7 +13,7 @@ class CreateRftResponseLogsTable extends Migration
             $table->enum('type', ['async', 'sync'])->comment('回调类型');
             $table->string('code');
             $table->string('msg');
-            $table->string('service')->comment('服务名称');
+            $table->string('service')->nullable()->comment('服务名称');
             $table->string('uuid');
             $table->string('version');
             $table->string('sequence_id');
