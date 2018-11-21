@@ -11,6 +11,9 @@ return [
     'pub_key' => storage_path(env('RFT_PUB_KEY')),
     'pri_key' => storage_path(env('RFT_PRI_KEY')),
 
+    'client_ip' => env('RFT_CLIENT_IP'),
+
+    'client_service' => env('RFT_CLIENT_SERVICE'),
 
     // 异步采用统一的回调地址，通过触发不同的事件来做出相应。
     'callback' => [
