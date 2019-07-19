@@ -175,7 +175,8 @@ rock-fintech的laravel封装，加入事件，控制台等机制。**dev-master�
      `RockAfterRequest` 事件，会在同步回调完成之后触发，通过 `$event->request` 可以获得 `Request` 对象， `$event->response` 可以获得同步回调的 `Response` 对象。
     
 5. future
-    1. 测试数据模拟回调
-    2. 账单数据自动读取
-    3. request快速撤销
-    4. request重发
+    1. 账单数据自动读取
+    2. request快速撤销
+    3. request重发
+    4. 自动对账
+    5. 测试数据模拟回调

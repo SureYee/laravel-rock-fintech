@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sure
- * Date: 2018-08-31
- * Time: 12:09
- */
 
 namespace Sureyee\LaravelRockFinTech\Console;
 
@@ -29,11 +23,10 @@ class RockSync extends Command
     public function handle()
     {
         try {
-            $date = $this->getDateFromArgument();
             $config = config('rock_fin_tech.sftp');
             $filesystem = new Filesystem(new SftpAdapter($config));
 
-            $path = $date . '/NEWALEVE ' . config('rock_fin_tech.sftp_origin') . '-' . $date;
+            $path = $this->getPath();
 
             if ($filesystem->has($path)) {
 
@@ -54,6 +47,7 @@ class RockSync extends Command
     }
 
     /**
+     * @return Carbon
      * @throws ArgumentValidFailedException
      */
     protected function getDateFromArgument()
@@ -63,7 +57,7 @@ class RockSync extends Command
         if (!$timestamp)
             throw new ArgumentValidFailedException('date 参数错误！');
 
-        return date('Ymd', $timestamp);
+        return Carbon::createFromTimestamp($timestamp);
     }
 
     protected function parseContent($content)
@@ -90,5 +84,14 @@ class RockSync extends Command
     protected function saveData($data)
     {
         RftBalanceLog::create($data);
+    }
+
+    /**
+     * @throws ArgumentValidFailedException
+     */
+    protected function getPath()
+    {
+        $date = $this->getDateFromArgument();
+        return './download/' . $date->format('Ymd') . '/NEWALEVE' . config('rock_fin_tech.sftp_origin') . '-' . $date->copy()->subDay()->format('Ymd');
     }
 }
