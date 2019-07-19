@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sure
- * Date: 2018-07-31
- * Time: 15:13
- */
 
 namespace Sureyee\LaravelRockFinTech;
 
@@ -148,6 +142,18 @@ class Rock
     }
 
     /**
+     * 电子账户绑卡关系查询
+     * @param $card_no
+     * @return Rock
+     */
+    public function bindlingList($card_no)
+    {
+        $params = ['card_no' => $card_no];
+
+        return $this->buildRequest(__FUNCTION__, $params);
+    }
+
+    /**
      * 电子账户余额查询
      * @param string $card_no 电子账号
      * @param string $customer_no 客户号
@@ -204,40 +210,6 @@ class Rock
     }
 
     /**
-     * 投资人投资明细查询
-     * @param string $card_no 	电子账号，必填，19（位数）
-     * @param string|null $asset_no 标的编号，有条件必填，为空时查询所有的产品；不为空时按输入的产品发行方查询，40（位数）
-     * @param int $state 查询的记录状态, 有条件必填，0：查询所有状态；1：投标中 2：放款中 3：计息中 4：本息已返回还，1（位数）
-     * @param int|null $page_flag 翻页标志，有条件必填，首次查询上送空 ；翻页查询上送1，1（位数）
-     * @param string|null $buy_date 投标日期，有条件必填，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的投标日期，8（位数）
-     * @param string|null $out_serial_no 交易流水号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的申请流水号，32（位数）
-     * @param string|null $asset_page 标的编号，有条件必填 ，翻页控制使用；首次查询上送空；翻页查询时上送上页返回的最后一条记录的标的编号，6（位数）
-     * @return Rock
-     */
-    public function accountCredits(
-        $card_no,
-        $asset_no = null,
-        $state = RockConfig::SEARCH_STATE_ALL,
-        $page_flag = RockConfig::PAGE_FLAG_TRUE,
-        $buy_date = null,
-        $out_serial_no = null,
-        $asset_page = null)
-    {
-        
-        $params = [
-            'card_no' => $card_no,
-            'asset_no' => $asset_no,
-            'state' => $state,
-            'page_flag' => $page_flag,
-            'buy_date' => $buy_date,
-            'out_serial_no' => $out_serial_no,
-            'asset_page' => $asset_page,
-        ];
-
-        return $this->buildRequest(__FUNCTION__, $params);
-    }
-
-    /**
      * 账户业务流程查询
      * @param string $card_no 卡号，必填，电子账户，19（位数）
      * @param string $begin_date 起始记账日期，必填，格式：Ymd
@@ -289,7 +261,7 @@ class Rock
      */
     public function gatewayQuery($order_id)
     {
-        return $this->buildRequest(__FUNCTION__, compact('order_id'));
+        return $this->buildRequest(__FUNCTION__, ['order_id']);
     }
 
     /**
@@ -299,7 +271,7 @@ class Rock
      */
     public function setPasswordQuery($order_id)
     {
-        return $this->buildRequest(__FUNCTION__, compact('order_id'));
+        return $this->buildRequest(__FUNCTION__, ['order_id']);
     }
 
     /**
@@ -867,9 +839,11 @@ class Rock
      * @param $loan_term
      * @param $interest_rate
      * @param null $warrant_card_no
+     * @param null $second_warrant_card_no
+     * @param null $third_warrant_card_no
      * @param null $borrow_card_no
      * @param null $debtor_card_no
-     * @param $trustee_pay_flag
+     * @param int $trustee_pay_flag
      * @param null $third_custom
      * @return Rock
      */
@@ -883,14 +857,14 @@ class Rock
         $loan_term,
         $interest_rate,
         $warrant_card_no = null,
+        $second_warrant_card_no = null,
+        $third_warrant_card_no = null,
         $borrow_card_no = null,
         $debtor_card_no = null,
         $trustee_pay_flag = RockConfig::TRUSTEE_PAY_FLAG_NORMAL,
         $third_custom = null
     )
     {
-        
-
         $params = [
             'asset_no' => $asset_no,
             'asset_brief' => $asset_brief,
@@ -901,6 +875,8 @@ class Rock
             'loan_term' => $loan_term,
             'interest_rate' => $interest_rate,
             'warrant_card_no' => $warrant_card_no,
+            'second_warrant_card_no' => $second_warrant_card_no,
+            'third_warrant_card_no' => $third_warrant_card_no,
             'borrow_card_no	' => $borrow_card_no,
             'debtor_card_no' => $debtor_card_no,
             'trustee_pay_flag' => $trustee_pay_flag,
@@ -1419,46 +1395,6 @@ class Rock
     }
 
     /**
-     * 撤销自动债权转让签约
-     * @param $card_no
-     * @param $origin_serial_no
-     * @param null $third_custom
-     * @param null $out_serial_no
-     * @return Rock
-     */
-    public function revokeCreditTransfer($card_no, $origin_serial_no, $third_custom = null, $out_serial_no = null)
-    {
-        
-        $params = [
-            'card_no' => $card_no,
-            'origin_serial_no' => $origin_serial_no,
-            'out_serial_no' => $out_serial_no ?? uniqueId32(),
-            'third_custom' => $third_custom,
-        ];
-
-        return $this->buildRequest(__FUNCTION__, $params);
-
-    }
-
-    /**
-     * 投资人自动债转签约状态查询
-     * @param $card_no
-     * @param null $third_custom
-     * @return Rock
-     */
-    public function signTransferQuery($card_no, $third_custom = null)
-    {
-        
-        $params = [
-            'card_no' => $card_no,
-            'third_custom' => $third_custom,
-        ];
-
-        return $this->buildRequest(__FUNCTION__, $params);
-
-    }
-
-    /**
      * 标的投标详情
      * @param $card_no
      * @param $asset_no
@@ -1892,56 +1828,6 @@ class Rock
     }
 
     /**
-     * 批次投资人购买债权
-     * @param ItemsRequest $itemsRequest,
-     * @param null $batch_no
-     * @return Rock
-     */
-    public function batchBuyCreditB(
-        ItemsRequest $itemsRequest,
-        $batch_no = null
-    )
-    {
-        
-
-        $params = [
-            'batch_no' => $batch_no ?? uniqid(),
-            'batch_count' => $itemsRequest->count(),
-            'notify_url' => $this->callback,
-            'items' => $itemsRequest->transformer()
-        ];
-
-        return $this->buildRequest(__FUNCTION__, $params);
-
-
-    }
-
-    /**
-     * 批次投资人购买债权撤销
-     * @param ItemsRequest $itemsRequest
-     * @param null $batch_no
-     * @param null $batch_date
-     * @return Rock
-     */
-    public function batchRevokeBuyCreditB(
-        ItemsRequest $itemsRequest,
-        $batch_no = null,
-        $batch_date = null
-    )
-    {
-        $params = [
-            'batch_no' => $batch_no ?? uniqid(),
-            'batch_count' => $itemsRequest->count(),
-            'batch_date' => $batch_date ?? date('Ymd'),
-            'notify_url' => $this->callback,
-            'items' => $itemsRequest->transformer()
-        ];
-
-        return $this->buildRequest(__FUNCTION__, $params);
-    }
-
-
-    /**
      * 批次放款撤销
      * @param ItemsRequest $itemsRequest
      * @param string $batch_type
@@ -2089,11 +1975,96 @@ class Rock
         return $this->buildRequest(__FUNCTION__, $params);
     }
 
+    // ============================== 协议支付相关接口 =============================//
+
+    /**
+     * 协议解绑卡
+     * @param $card_no
+     * @param $bank_card_no
+     * @param $customer_no
+     * @param $serial_no
+     * @param $bank_mobile
+     * @param int $card_type
+     * @return Rock
+     */
+    public function unbindBankCardAgreement($card_no, $bank_card_no, $customer_no, $serial_no, $bank_mobile, $card_type = RockConfig::CARD_TYPE_MAIN)
+    {
+        $params = [
+            'card_no' => $card_no,
+            'bank_card_no' => $bank_card_no,
+            'customer_no' => $customer_no,
+            'serial_no' => $serial_no,
+            'card_type' => $card_type,
+            'bank_mobile' => $bank_mobile
+        ];
+
+        return $this->buildRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * 协议充值（页面）
+     * @param $card_no
+     * @param $bind_card
+     * @param $amount
+     * @param $fee
+     * @param $name
+     * @param $mobile
+     * @param $cert_no
+     * @param int $cert_type
+     * @param null $order_no
+     * @return Rock
+     */
+    public function rechargeAgreementP($card_no, $bind_card, $amount, $fee, $name, $mobile, $cert_no, $cert_type = RockConfig::CERT_TYPE_ID_CARD, $order_no = null)
+    {
+        $params = [
+            'order_no' => $order_no ?? uniqueId32(),
+            'card_no' => $card_no,
+            'bind_card' => $bind_card,
+            'amount' => $amount,
+            'fee' => $fee,
+            'cert_type' => $cert_type,
+            'cert_no' => $cert_no,
+            'name' => $name,
+            'mobile' => $mobile,
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'callback_url' => $this->callback,
+            'forget_pwd_url' => $this->forgetPwdUrl(__FUNCTION__)
+        ];
+        return $this->buildRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * 协议解绑银行卡（页面）
+     * @param $card_no
+     * @param $bank_card_no
+     * @param $customer_no
+     * @param $serial_no
+     * @param null $out_serial_no
+     * @return Rock
+     */
+    public function unbindBankCardAgreementP($card_no, $bank_card_no, $customer_no, $serial_no, $out_serial_no = null)
+    {
+        $params = [
+            'card_no' => $card_no,
+            'bank_card_no' => $bank_card_no,
+            'customer_no' => $customer_no,
+            'serial_no' => $serial_no,
+            'out_serial_no' => $out_serial_no ?? uniqueId32(),
+            'success_url' => $this->successUrl(__FUNCTION__),
+            'fail_url' => $this->failUrl(__FUNCTION__),
+            'callback_url' => $this->callback
+        ];
+
+        return $this->buildRequest(__FUNCTION__, $params);
+    }
+
+
     // ============================== 企业类接口 ==================================//
 
 
     /**
-     *
+     * 线下信息入库
      * @param $cert_no
      * @param $name
      * @param $mobile
