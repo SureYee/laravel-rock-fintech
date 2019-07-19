@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sure
- * Date: 2018-09-07
- * Time: 21:44
- */
 
 namespace Sureyee\LaravelRockFinTech\Responses;
 

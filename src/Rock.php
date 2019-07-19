@@ -2161,10 +2161,10 @@ class Rock
     }
 
     /**
-     * 发送请求
      * @return Response
      * @throws ResponseException
      * @throws SystemDownException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Sureyee\RockFinTech\Exceptions\DecryptException
      * @throws \Sureyee\RockFinTech\Exceptions\RsaKeyNotFoundException
      */
